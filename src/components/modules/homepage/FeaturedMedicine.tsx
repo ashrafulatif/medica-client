@@ -34,8 +34,7 @@ interface Medicine {
   averageRating: number;
 }
 
-const PopularMedicineSection = () => {
-  // Mock data for popular medicines (replace with your actual API data)
+const FeaturedMedicineSection = () => {
   const medicines: Medicine[] = [
     {
       id: "a859c8f6-5bb5-45d5-8bfa-1a4415cb6564",
@@ -46,8 +45,8 @@ const PopularMedicineSection = () => {
       thumbnail: null,
       manufacturer: "Beximco Pharmaceuticals",
       isActive: true,
-      isFeatured: false,
-      views: 245,
+      isFeatured: true,
+      views: 8,
       createdAt: "2026-01-28T22:00:21.053Z",
       updatedAt: "2026-01-30T10:41:00.024Z",
       category: {
@@ -59,8 +58,8 @@ const PopularMedicineSection = () => {
         name: "Blake",
         email: "blake@gmail.com",
       },
-      reviewCount: 12,
-      averageRating: 4.2,
+      reviewCount: 0,
+      averageRating: 0,
     },
     {
       id: "d3f6df73-24b5-43e9-82d4-e2124eb322db",
@@ -72,8 +71,8 @@ const PopularMedicineSection = () => {
         "https://i.ibb.co/fVpWSgQS/medicine-1769732293146-napa-png.png",
       manufacturer: "Beximco Pharmaceuticals",
       isActive: true,
-      isFeatured: false,
-      views: 189,
+      isFeatured: true,
+      views: 0,
       createdAt: "2026-01-30T00:41:25.125Z",
       updatedAt: "2026-01-30T00:41:25.125Z",
       category: {
@@ -85,8 +84,8 @@ const PopularMedicineSection = () => {
         name: "Blake",
         email: "blake@gmail.com",
       },
-      reviewCount: 8,
-      averageRating: 4.5,
+      reviewCount: 0,
+      averageRating: 0,
     },
     {
       id: "c3f6df73-24b5-43e9-82d4-e2124eb322dc",
@@ -98,63 +97,13 @@ const PopularMedicineSection = () => {
       thumbnail: null,
       manufacturer: "Square Pharmaceuticals",
       isActive: true,
-      isFeatured: false,
-      views: 156,
+      isFeatured: true,
+      views: 15,
       createdAt: "2026-01-29T00:41:25.125Z",
       updatedAt: "2026-01-29T00:41:25.125Z",
       category: {
         id: "f1fd83e0-8f5e-4ffc-bd3a-f877994e3f04",
         name: "Pain Relief",
-      },
-      seller: {
-        id: "HlHYDU4kYQaeYaxdlcrb1gwWCUP8hxFR",
-        name: "Blake",
-        email: "blake@gmail.com",
-      },
-      reviewCount: 15,
-      averageRating: 4.3,
-    },
-    {
-      id: "c3f6df73-24b5-43e9-82d4s-e2124eb322dc",
-      name: "Ibuprofen 400mg",
-      description: "Anti-inflammatory medicine for pain and fever relief.",
-      price: 15.0,
-      stocks: 90,
-      thumbnail: null,
-      manufacturer: "Square Pharmaceuticals",
-      isActive: true,
-      isFeatured: false,
-      views: 134,
-      createdAt: "2026-01-29T00:41:25.125Z",
-      updatedAt: "2026-01-29T00:41:25.125Z",
-      category: {
-        id: "f1fd83e0-8f5e-4ffc-bd3a-f877994e3f04",
-        name: "Pain Relief",
-      },
-      seller: {
-        id: "HlHYDU4kYQaeYaxdlcrb1gwWCUP8hxFR",
-        name: "Blake",
-        email: "blake@gmail.com",
-      },
-      reviewCount: 7,
-      averageRating: 4.1,
-    },
-    {
-      id: "c3f6df73-24b5-43fe9-82d4-e2124eb322dc",
-      name: "Omeprazole 20mg",
-      description: "Acid reducer for stomach ulcers and heartburn.",
-      price: 22.0,
-      stocks: 60,
-      thumbnail: null,
-      manufacturer: "Renata Pharmaceuticals",
-      isActive: true,
-      isFeatured: false,
-      views: 98,
-      createdAt: "2026-01-29T00:41:25.125Z",
-      updatedAt: "2026-01-29T00:41:25.125Z",
-      category: {
-        id: "f1fd83e0-8f5e-4ffc-bd3a-f877994e3f04",
-        name: "Digestive Health",
       },
       seller: {
         id: "HlHYDU4kYQaeYaxdlcrb1gwWCUP8hxFR",
@@ -162,7 +111,59 @@ const PopularMedicineSection = () => {
         email: "blake@gmail.com",
       },
       reviewCount: 5,
-      averageRating: 4.4,
+      averageRating: 4.5,
+    },
+    {
+      id: "c3f6df73-24b5-43e9-82d4s-e2124eb322dc",
+      name: "Paracetamol 500mg",
+      description:
+        "Effective pain relief and fever reducer for adults and children.",
+      price: 12.5,
+      stocks: 75,
+      thumbnail: null,
+      manufacturer: "Square Pharmaceuticals",
+      isActive: true,
+      isFeatured: true,
+      views: 15,
+      createdAt: "2026-01-29T00:41:25.125Z",
+      updatedAt: "2026-01-29T00:41:25.125Z",
+      category: {
+        id: "f1fd83e0-8f5e-4ffc-bd3a-f877994e3f04",
+        name: "Pain Relief",
+      },
+      seller: {
+        id: "HlHYDU4kYQaeYaxdlcrb1gwWCUP8hxFR",
+        name: "Blake",
+        email: "blake@gmail.com",
+      },
+      reviewCount: 5,
+      averageRating: 4.5,
+    },
+    {
+      id: "c3f6df73-24b5-43fe9-82d4-e2124eb322dc",
+      name: "Paracetamol 500mg",
+      description:
+        "Effective pain relief and fever reducer for adults and children.",
+      price: 12.5,
+      stocks: 75,
+      thumbnail: null,
+      manufacturer: "Square Pharmaceuticals",
+      isActive: true,
+      isFeatured: true,
+      views: 15,
+      createdAt: "2026-01-29T00:41:25.125Z",
+      updatedAt: "2026-01-29T00:41:25.125Z",
+      category: {
+        id: "f1fd83e0-8f5e-4ffc-bd3a-f877994e3f04",
+        name: "Pain Relief",
+      },
+      seller: {
+        id: "HlHYDU4kYQaeYaxdlcrb1gwWCUP8hxFR",
+        name: "Blake",
+        email: "blake@gmail.com",
+      },
+      reviewCount: 5,
+      averageRating: 4.5,
     },
   ];
 
@@ -170,10 +171,10 @@ const PopularMedicineSection = () => {
     <div className="container mx-auto py-20 px-4">
       <div className="flex flex-col justify-center text-center mb-12">
         <h1 className="text-5xl font-bold py-2">
-          Top Viewed <span className="text-muted-foreground">Medicines</span>
+          Featured <span className="text-muted-foreground">Medicines</span>
         </h1>
         <p className="text-muted-foreground text-xl">
-          Discover our most popular and highly viewed medicines
+          Discover our top-rated and popular medicines
         </p>
       </div>
 
@@ -202,4 +203,4 @@ const PopularMedicineSection = () => {
   );
 };
 
-export default PopularMedicineSection;
+export default FeaturedMedicineSection;
