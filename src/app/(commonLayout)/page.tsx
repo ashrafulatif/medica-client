@@ -1,4 +1,3 @@
-import { MedicineCard } from "@/components/MedicineCard";
 import CategorySection from "@/components/modules/homepage/CategorySection";
 import FeaturedMedicineSection from "@/components/modules/homepage/FeaturedMedicine";
 import { Hero } from "@/components/modules/homepage/Hero";

@@ -13,7 +13,9 @@ export const API_ENDPOINTS = {
     logout: "/auth/logout",
   },
   medicines: {
-    getAll: "/medicines",
+    getAll: "/api/medicines",
+    getFeaturedMedicine: "/api/medicines/isFeatured",
+    getPopulardMedicine: "/api/medicines/topViewed-medicine",
     getById: (id: string) => `/medicines/${id}`,
   },
 } as const;
