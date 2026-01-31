@@ -10,6 +10,7 @@ export const env = createEnv({
   },
   client: {
     NEXT_PUBLIC_GOOGLELOGIN_FALLBACKURL: z.url(),
+    NEXT_PUBLIC_BACKEND_AUTH: z.url(),
   },
   runtimeEnv: {
     BACKEND_URL: process.env.BACKEND_URL,
@@ -18,5 +19,6 @@ export const env = createEnv({
     AUTH_URL: process.env.AUTH_URL,
     NEXT_PUBLIC_GOOGLELOGIN_FALLBACKURL:
       process.env.NEXT_PUBLIC_GOOGLELOGIN_FALLBACKURL,
+    NEXT_PUBLIC_BACKEND_AUTH: process.env.NEXT_PUBLIC_BACKEND_AUTH,
   },
 });
