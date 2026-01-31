@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 interface Medicine {
   id: string;
@@ -39,7 +40,7 @@ interface MedicineCardProps {
 }
 
 const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
-  const defaultImage = "https://via.placeholder.com/300x300?text=Medicine";
+  const defaultImage = "/fallbackMedicine";
 
   const getBadgeInfo = () => {
     if (medicine.stocks < 50) {
@@ -54,7 +55,7 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
   const badgeInfo = getBadgeInfo();
 
   return (
-    <a href={`/medicine/${medicine.id}`} className={cn(className)}>
+    <Link href={`/shop/${medicine.id}`} className={cn(className)}>
       <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group border-2 hover:border-primary/30">
         <CardHeader className="relative p-0">
           <AspectRatio ratio={1} className="overflow-hidden">
@@ -105,7 +106,7 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
           </div>
         </CardContent>
       </Card>
-    </a>
+    </Link>
   );
 };
 

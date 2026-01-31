@@ -128,13 +128,20 @@ const getPopularMedicine = async () => {
 
 const getMedicinebyId = async (id: string) => {
   try {
-    const res = await fetch(`${BASE_URL}/post/${id}`);
+    const res = await fetch(
+      `${buildApiUrl(API_ENDPOINTS.medicines.getMedicineById(id))}`,
+    );
 
     const data = await res.json();
 
+    if (!data.success) {
+      return {
+        message: data.message,
+      };
+    }
     return {
-      data: data,
-      error: null,
+      message: data.message,
+      data: data.data,
     };
   } catch (error) {
     return {
@@ -180,4 +187,5 @@ export const MedicineService = {
   getMedicine,
   getFeaturedMedicine,
   getPopularMedicine,
+  getMedicinebyId
 };

@@ -16,7 +16,7 @@ export const API_ENDPOINTS = {
     getAll: "/api/medicines",
     getFeaturedMedicine: "/api/medicines/isFeatured",
     getPopulardMedicine: "/api/medicines/topViewed-medicine",
-    getById: (id: string) => `/medicines/${id}`,
+    getMedicineById: (id: string) => `/api/medicines/${id}`,
   },
 } as const;
 
