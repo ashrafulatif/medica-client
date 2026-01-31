@@ -21,6 +21,7 @@ import { authClient } from "@/lib/auth-client";
 
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import * as z from "zod";
@@ -31,6 +32,8 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const router = useRouter();
+
   //social login handler
   const socialLoginHandler = async () => {
     const data = authClient.signIn.social({
@@ -54,6 +57,8 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Login Successfully !", { id: toastId });
+
+        router.push("/");
       } catch (error) {
         toast.error("Something went wrong! Try again.", { id: toastId });
       }
