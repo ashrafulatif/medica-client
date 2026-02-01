@@ -16,6 +16,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useSession } from "@/context/authContext";
 import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
@@ -32,6 +33,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
+  const { refreshSession } = useSession();
   const router = useRouter();
 
   //social login handler
@@ -57,7 +59,8 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
           return;
         }
         toast.success("Login Successfully !", { id: toastId });
-
+        //refresh session after login
+        await refreshSession();
         router.push("/");
       } catch (error) {
         toast.error("Something went wrong! Try again.", { id: toastId });

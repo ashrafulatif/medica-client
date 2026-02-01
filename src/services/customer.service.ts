@@ -127,9 +127,45 @@ const getOrderId = async (id: string) => {
   }
 };
 
+const cancelOrder = async (id: string) => {
+  try {
+    const cookieStorage = await cookies();
+    //url
+    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.cancelOrder(id)));
+
+    const res = await fetch(url.toString(), {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookieStorage.toString(),
+      },
+      body: JSON.stringify({ status: "CANCELLED" }),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return {
+        message: data.message,
+        error: data.message,
+      };
+    }
+    return {
+      message: data.message,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: "Something went wrong",
+    };
+  }
+};
+
 export const CustomerService = {
   getCustomerOrderstats,
   getCustomerRecentOrder,
   getAllOrders,
   getOrderId,
+  cancelOrder,
 };

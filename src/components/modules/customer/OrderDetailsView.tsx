@@ -5,6 +5,7 @@ import { Package, MapPin, CreditCard, User, Truck } from "lucide-react";
 
 import { getPaymentMethodColor, getStatusColor } from "@/helpers/colorHelpers";
 import { OrderDetailsViewProps } from "@/types/orderDetailsTypes";
+import { CancelOrderDialog } from "./CancelOrder";
 
 const OrderDetailsView = ({ order }: OrderDetailsViewProps) => {
   const formatDate = (dateString: string) => {
@@ -54,12 +55,17 @@ const OrderDetailsView = ({ order }: OrderDetailsViewProps) => {
               </Badge>
             </div>
           </CardHeader>
+
           <CardContent>
             <div className="flex items-center justify-between text-sm text-muted-foreground">
               <span>Last updated</span>
               <span>{formatDate(order.updatedAt)}</span>
             </div>
           </CardContent>
+
+          <div className="flex justify-end p-4">
+            <CancelOrderDialog orderId={order.id} orderStatus={order.status} />
+          </div>
         </Card>
 
         {/* Order Summary */}
@@ -166,7 +172,7 @@ const OrderDetailsView = ({ order }: OrderDetailsViewProps) => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-900">{order.shippingAddress}</p>
+            <p className="text-muted-foreground">{order.shippingAddress}</p>
           </CardContent>
         </Card>
       </div>

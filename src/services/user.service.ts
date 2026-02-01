@@ -8,7 +8,7 @@ const getSession = async () => {
   try {
     const cookieStorage = await cookies();
 
-    const res = await fetch(`${AUTH_URL}${API_ENDPOINTS.auth.getSession}`, {
+    const res = await fetch(`${AUTH_URL}/get-session`, {
       headers: {
         Cookie: cookieStorage.toString(),
       },
