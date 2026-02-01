@@ -24,7 +24,7 @@ export const proxy = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/seller-dashboard", request.url));
     }
     if (userRole === userRoles.customer) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
   }
 
@@ -37,7 +37,16 @@ export const proxy = async (request: NextRequest) => {
       return NextResponse.redirect(new URL("/admin-dashboard", request.url));
     }
     if (userRole === userRoles.customer) {
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+  }
+
+  if (pathname.startsWith("/dashboard") && userRole !== userRoles.customer) {
+    if (userRole === userRoles.admin) {
+      return NextResponse.redirect(new URL("/admin-dashboard", request.url));
+    }
+    if (userRole === userRoles.seller) {
+      return NextResponse.redirect(new URL("/seller-dashboard", request.url));
     }
   }
 
@@ -46,6 +55,8 @@ export const proxy = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
+    "/dashboard",
+    "/dashboard/:path*",
     "/admin-dashboard",
     "/admin-dashboard/:path*",
     "/seller-dashboard",

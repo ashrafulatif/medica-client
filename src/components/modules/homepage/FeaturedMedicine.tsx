@@ -1,4 +1,3 @@
-import React from "react";
 import { MedicineCard } from "@/components/ui/MedicineCard";
 import {
   Carousel,
@@ -11,9 +10,11 @@ import { MedicineService } from "@/services/medicine.service";
 import { IMedicineTypes } from "@/types";
 
 const FeaturedMedicineSection = async () => {
+  //fetchData
   const featuredData = await MedicineService.getFeaturedMedicine();
 
   const medicines: IMedicineTypes[] = featuredData.data || [];
+
   return (
     <div className="container mx-auto py-20 px-4">
       <div className="flex flex-col justify-center text-center mb-12">

@@ -18,6 +18,11 @@ export const API_ENDPOINTS = {
     getPopulardMedicine: "/api/medicines/topViewed-medicine",
     getMedicineById: (id: string) => `/api/medicines/${id}`,
   },
+
+  orders: {
+    getCustomerOrderStats: "/api/orders/customerOrderStats",
+    getCustomerRecentOrders: "/api/orders/recent",
+  },
 } as const;
 
 export const buildApiUrl = (endpoint: string): string => {
