@@ -1,10 +1,8 @@
-import * as React from "react";
-
-import { SearchForm } from "@/components/layout/search-form";
-import { VersionSwitcher } from "@/components/layout/version-switcher";
+"use client";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -14,168 +12,218 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { IRoutes } from "@/types";
+import { adminRoute } from "@/routes/adminRoute";
+import { userRoles } from "@/constants/userRoles";
+import { sellerRoute } from "@/routes/sellerRoute";
+import { User, Settings, LogOut, ChevronUp, Bell, Shield } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "#",
-      items: [
-        {
-          title: "Installation",
-          url: "#",
-        },
-        {
-          title: "Project Structure",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Building Your Application",
-      url: "#",
-      items: [
-        {
-          title: "Routing",
-          url: "#",
-        },
-        {
-          title: "Data Fetching",
-          url: "#",
-          isActive: true,
-        },
-        {
-          title: "Rendering",
-          url: "#",
-        },
-        {
-          title: "Caching",
-          url: "#",
-        },
-        {
-          title: "Styling",
-          url: "#",
-        },
-        {
-          title: "Optimizing",
-          url: "#",
-        },
-        {
-          title: "Configuring",
-          url: "#",
-        },
-        {
-          title: "Testing",
-          url: "#",
-        },
-        {
-          title: "Authentication",
-          url: "#",
-        },
-        {
-          title: "Deploying",
-          url: "#",
-        },
-        {
-          title: "Upgrading",
-          url: "#",
-        },
-        {
-          title: "Examples",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "API Reference",
-      url: "#",
-      items: [
-        {
-          title: "Components",
-          url: "#",
-        },
-        {
-          title: "File Conventions",
-          url: "#",
-        },
-        {
-          title: "Functions",
-          url: "#",
-        },
-        {
-          title: "next.config.js Options",
-          url: "#",
-        },
-        {
-          title: "CLI",
-          url: "#",
-        },
-        {
-          title: "Edge Runtime",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
-  ],
-};
+interface UserData {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  image?: string | null;
+  phone?: string;
+  status?: string;
+}
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({
+  user,
+  ...props
+}: {
+  user: UserData;
+} & React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+
+  let routes: IRoutes[] = [];
+
+  switch (user.role) {
+    case userRoles.admin:
+      routes = adminRoute;
+      break;
+    case userRoles.seller:
+      routes = sellerRoute;
+      break;
+    default:
+      break;
+  }
+
+  const getRoleBadgeColor = (role: string) => {
+    switch (role) {
+      case userRoles.admin:
+        return "destructive";
+      case userRoles.seller:
+        return "default";
+      default:
+        return "secondary";
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  const handleLogout = async () => {
+    toast.loading("Logging out...", { id: "logout" });
+
+    return await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("Logged out successfully!", { id: "logout" });
+          router.push("/");
+        },
+        onError: () => {
+          toast.error("Failed to logout. Please try again.", { id: "logout" });
+        },
+      },
+    });
+  };
+
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        <SearchForm />
+      {/* Header with user info */}
+      <SidebarHeader className="border-b border-border">
+        <div className="flex items-center gap-3 p-4">
+          <Avatar className="h-10 w-10">
+            <AvatarImage src={user.image || ""} alt={user.name} />
+            <AvatarFallback className="bg-primary text-primary-foreground">
+              {getInitials(user.name)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium truncate">{user.name}</p>
+            <p className="text-xs text-muted-foreground truncate">
+              {user.email}
+            </p>
+          </div>
+          <Badge variant={getRoleBadgeColor(user.role)} className="text-xs">
+            {user.role}
+          </Badge>
+        </div>
       </SidebarHeader>
+
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
+        {/* Navigation Routes */}
+        {routes.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {item.items.map((menuItem) => {
+                  const IconComponent = (menuItem as any).icon;
+                  return (
+                    <SidebarMenuItem key={menuItem.title}>
+                      <SidebarMenuButton asChild>
+                        <Link href={menuItem.url}>
+                          {IconComponent && (
+                            <IconComponent className="w-4 h-4" />
+                          )}
+                          <span>{menuItem.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
+
+      {/* Footer with user actions */}
+      <SidebarFooter className="border-t border-border">
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton
+                  size="lg"
+                  className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+                >
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={user.image || ""} alt={user.name} />
+                    <AvatarFallback className="rounded-lg bg-primary text-primary-foreground">
+                      {getInitials(user.name)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name}</span>
+                    <span className="truncate text-xs text-muted-foreground">
+                      {user.email}
+                    </span>
+                  </div>
+                  <ChevronUp className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarImage src={user.image || ""} alt={user.name} />
+                      <AvatarFallback className="rounded-lg bg-primary text-primary-foreground">
+                        {getInitials(user.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">
+                        {user.name}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="gap-2">
+                  <User className="h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                {user.role === userRoles.admin && (
+                  <DropdownMenuItem className="gap-2">
+                    <Shield className="h-4 w-4" />
+                    <span>Admin Panel</span>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="gap-2 text-red-600 focus:text-red-600"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );

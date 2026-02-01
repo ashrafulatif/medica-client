@@ -1,5 +1,5 @@
 import React from "react";
-import { MedicineCard } from "@/components/MedicineCard";
+import { MedicineCard } from "@/components/ui/MedicineCard";
 import {
   Carousel,
   CarouselContent,

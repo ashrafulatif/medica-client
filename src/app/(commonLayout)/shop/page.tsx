@@ -1,6 +1,6 @@
 import MedicineFilterForm from "@/components/modules/shop/MedicineFilterForm";
 import { MedicineService } from "@/services/medicine.service";
-import { MedicineCard } from "@/components/MedicineCard";
+import { MedicineCard } from "@/components/ui/MedicineCard";
 import PaginationControls from "@/components/ui/pagination-control";
 
 interface Medicine {

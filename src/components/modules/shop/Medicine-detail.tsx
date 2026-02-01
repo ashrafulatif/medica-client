@@ -16,7 +16,7 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { IMedicineDetailsProps } from "@/types/medicine.type";
 
 const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
-  const defaultImage = "/fallbackMedicine";
+  const defaultImage = "/fallbackMedicine.jpg";
 
   const averageRating =
     medicine.reviews?.length > 0

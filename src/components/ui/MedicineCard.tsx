@@ -40,7 +40,7 @@ interface MedicineCardProps {
 }
 
 const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
-  const defaultImage = "/fallbackMedicine";
+  const defaultImage = "/fallbackMedicine.jpg";
 
   const getBadgeInfo = () => {
     if (medicine.stocks < 50) {
@@ -62,7 +62,7 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
             <img
               src={medicine.thumbnail || defaultImage}
               alt={medicine.name}
-              className="block size-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              className="block size-full object-cover object-center transition-transform duration-300 hover:scale-105 rounded-md"
             />
           </AspectRatio>
           <Badge

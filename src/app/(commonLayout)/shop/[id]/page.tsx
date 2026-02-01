@@ -1,4 +1,4 @@
-import MedicineDetails from "@/components/Medicine-detail";
+import MedicineDetails from "@/components/modules/shop/Medicine-detail";
 import { MedicineService } from "@/services/medicine.service";
 import React from "react";
 
