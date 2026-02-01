@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { Price, PriceValue } from "@/components/shadcnblocks/price";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
+import { Price, PriceValue } from "./price";
 
 interface Medicine {
   id: string;

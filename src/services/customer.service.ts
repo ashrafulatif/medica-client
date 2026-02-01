@@ -67,7 +67,69 @@ const getCustomerRecentOrder = async () => {
   }
 };
 
+const getAllOrders = async () => {
+  try {
+    const cookieStorage = await cookies();
+
+    //url
+    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.getAllOrders));
+
+    const result = await fetch(url.toString(), {
+      cache: "no-store",
+      headers: { Cookie: cookieStorage.toString() },
+    });
+
+    const data = await result.json();
+
+    if (!data.success) {
+      return {
+        message: "Error Fetching",
+      };
+    }
+    return {
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: "Something went wrong",
+    };
+  }
+};
+
+const getOrderId = async (id: string) => {
+  try {
+    const cookieStorage = await cookies();
+    //url
+    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.getOrderById(id)));
+
+    const res = await fetch(url.toString(), {
+      cache: "no-store",
+      headers: { Cookie: cookieStorage.toString() },
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return {
+        message: data.message,
+      };
+    }
+    return {
+      message: data.message,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: "Something went wrong",
+    };
+  }
+};
+
 export const CustomerService = {
   getCustomerOrderstats,
   getCustomerRecentOrder,
+  getAllOrders,
+  getOrderId,
 };

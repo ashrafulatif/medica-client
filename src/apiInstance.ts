@@ -22,6 +22,8 @@ export const API_ENDPOINTS = {
   orders: {
     getCustomerOrderStats: "/api/orders/customerOrderStats",
     getCustomerRecentOrders: "/api/orders/recent",
+    getAllOrders: "/api/orders",
+    getOrderById: (id: string) => `/api/orders/${id}`,
   },
 } as const;
 

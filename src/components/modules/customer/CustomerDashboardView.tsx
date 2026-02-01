@@ -12,41 +12,17 @@ import {
   Clock,
 } from "lucide-react";
 import Link from "next/link";
-
-interface StatsData {
-  totalOrders: number;
-  pendingOrders: number;
-  totalSpent: number;
-  totalOrderItems: number;
-}
-
-interface RecentOrderData {
-  id: string;
-  status: string;
-  totalAmount: number;
-  createdAt: string;
-  updatedAt: string;
-  itemCount: number;
-  medicines: Array<{
-    id: string;
-    name: string;
-    thumbnail: string | null;
-    price: number;
-    quantity: number;
-    totalPrice: number;
-  }>;
-}
-
-interface UserInfo {
-  id: string;
-  name: string;
-  email: string;
-}
+import { getStatusColor } from "@/helpers/colorHelpers";
+import {
+  IRecentOrderData,
+  IStatsData,
+  IUserInfo,
+} from "@/types/dashboardTypes";
 
 interface CustomerDashboardViewProps {
-  stats: StatsData;
-  recentOrder: RecentOrderData[];
-  user: UserInfo;
+  stats: IStatsData;
+  recentOrder: IRecentOrderData[];
+  user: IUserInfo;
 }
 
 const CustomerDashboardView = ({
@@ -57,21 +33,6 @@ const CustomerDashboardView = ({
   const statsData = stats;
   const recentOrders = recentOrder;
   const customerData = user;
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "delivered":
-        return "bg-green-100 text-green-700";
-      case "processing":
-        return "bg-yellow-100 text-yellow-700";
-      case "shipped":
-        return "bg-blue-100 text-blue-700";
-      case "pending":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {

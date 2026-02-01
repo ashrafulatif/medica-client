@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Mail, Calendar, Shield, Edit, CheckCircle } from "lucide-react";
+import {
+  getRoleBadgeColor,
+  getStatusColorProfile,
+} from "@/helpers/colorHelpers";
 
 const ProfileView = ({ user }: { user: IUserInfo }) => {
   const formatDate = (dateString: string) => {
@@ -13,30 +17,6 @@ const ProfileView = ({ user }: { user: IUserInfo }) => {
       month: "long",
       day: "numeric",
     });
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "active":
-        return "bg-green-100 text-green-700";
-      case "inactive":
-        return "bg-red-100 text-red-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
-
-  const getRoleBadgeColor = (role: string) => {
-    switch (role.toLowerCase()) {
-      case "customer":
-        return "bg-blue-100 text-blue-700";
-      case "admin":
-        return "bg-purple-100 text-purple-700";
-      case "seller":
-        return "bg-orange-100 text-orange-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
   };
 
   return (
@@ -59,7 +39,10 @@ const ProfileView = ({ user }: { user: IUserInfo }) => {
             <Badge className={getRoleBadgeColor(user.role)} variant="secondary">
               {user.role}
             </Badge>
-            <Badge className={getStatusColor(user.status)} variant="secondary">
+            <Badge
+              className={getStatusColorProfile(user.status)}
+              variant="secondary"
+            >
               {user.status}
             </Badge>
           </div>
@@ -123,7 +106,7 @@ const ProfileView = ({ user }: { user: IUserInfo }) => {
             <div>
               <p className="text-sm text-muted-foreground">Account Status</p>
               <Badge
-                className={getStatusColor(user.status)}
+                className={getStatusColorProfile(user.status)}
                 variant="secondary"
               >
                 {user.status}
