@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Package, Calendar, Eye, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { getStatusColor } from "@/helpers/colorHelpers";
-import { OrdersViewProps } from "@/types/orderTypes";
+import { OrdersViewProps } from "@/types/order.types";
 
 
 

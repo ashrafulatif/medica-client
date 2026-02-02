@@ -82,7 +82,9 @@ const ShopPage = async ({
   );
 
   //get data
-  const medicineData = await MedicineService.getMedicine(cleanParams);
+  const medicineData = await MedicineService.getMedicine(cleanParams, {
+    revalidate: 60,
+  });
 
   return (
     <div className="container mx-auto px-4 py-8">

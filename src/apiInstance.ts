@@ -25,6 +25,14 @@ export const API_ENDPOINTS = {
     getAllOrders: "/api/orders",
     getOrderById: (id: string) => `/api/orders/${id}`,
     cancelOrder: (id: string) => `/api/orders/cancel/${id}`,
+    createOrder : "/api/orders"
+  },
+  cart: {
+    getCartItems: "/api/cart",
+    addCartItems: "/api/cart/add",
+    updateCartItem: (id: string) => `/api/cart/item/${id}`,
+    removeCartItem: (id: string) => `/api/cart/item/${id}`,
+    clearCart: "/api/cart/clear",
   },
 } as const;
 

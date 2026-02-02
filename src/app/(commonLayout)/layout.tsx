@@ -15,7 +15,7 @@ export default async function CommonLayout({
   return (
     <SessionProvider initialUser={initialUser}>
       <div>
-        <Navbar cartItemsCount={0} />
+        <Navbar />
         {children}
         <Footer />
       </div>

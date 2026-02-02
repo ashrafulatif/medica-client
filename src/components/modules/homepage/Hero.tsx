@@ -37,7 +37,7 @@ const Hero = ({
     },
     secondary: {
       text: "Browse Medicines",
-      url: "/medicines",
+      url: "/shop",
     },
   },
   image = {
@@ -52,7 +52,10 @@ const Hero = ({
         <div className="flex flex-col gap-7 lg:w-2/3">
           <h2 className="text-5xl font-semibold text-foreground md:text-5xl lg:text-7xl">
             <span>{heading}</span>
-            <span className="text-muted-foreground">{subheading}<span className="text-primary/80">.</span></span>
+            <span className="text-muted-foreground">
+              {subheading}
+              <span className="text-primary/80">.</span>
+            </span>
           </h2>
           <p className="text-base text-muted-foreground md:text-lg lg:text-xl">
             {description}

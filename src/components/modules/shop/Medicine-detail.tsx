@@ -1,8 +1,11 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
 import {
   Star,
   ShoppingCart,
@@ -11,12 +14,26 @@ import {
   Building2,
   Calendar,
   Eye,
+  Plus,
+  Minus,
+  Loader2,
 } from "lucide-react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { IMedicineDetailsProps } from "@/types/medicine.type";
+import { useCart } from "@/context/cartContext";
+import { toast } from "sonner";
 
 const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
+  const { addToCart, loading, cartItems } = useCart();
+  const [quantity, setQuantity] = useState(1);
+  const [addingToCart, setAddingToCart] = useState(false);
+
   const defaultImage = "/fallbackMedicine.jpg";
+
+  // Check if item is already in cart
+  const existingCartItem = cartItems.find(
+    (item) => item.medicineId === medicine.id,
+  );
 
   const averageRating =
     medicine.reviews?.length > 0
@@ -25,6 +42,9 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
       : 0;
 
   const getBadgeInfo = () => {
+    if (medicine.stocks < 1) {
+      return { text: "Out of Stock", variant: "destructive" as const };
+    }
     if (medicine.stocks < 50) {
       return { text: "Low Stock", variant: "destructive" as const };
     }
@@ -35,6 +55,39 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
   };
 
   const badgeInfo = getBadgeInfo();
+  const isOutOfStock = medicine.stocks < 1;
+  const maxQuantity = Math.min(medicine.stocks, 10); // limit mx 10
+
+  const handleQuantityChange = (newQuantity: number) => {
+    if (newQuantity >= 1 && newQuantity <= maxQuantity) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (isOutOfStock) {
+      toast.error("This item is out of stock", { id: "error" });
+      return;
+    }
+
+    if (quantity < 1 || quantity > maxQuantity) {
+      toast.error(`Please select a quantity between 1 and ${maxQuantity}`, {
+        id: "error",
+      });
+      return;
+    }
+
+    setAddingToCart(true);
+    try {
+      await addToCart(medicine.id, quantity);
+      // Reset quantity after successful add
+      setQuantity(1);
+    } catch (error) {
+      toast.error("Failed to add item to cart");
+    } finally {
+      setAddingToCart(false);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-15">
@@ -51,7 +104,7 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
                 />
               </AspectRatio>
             </CardContent>
-          </Card>{" "}
+          </Card>
         </div>
 
         {/* Details Section */}
@@ -140,6 +193,59 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
 
           <Separator />
 
+          {/* Quantity Selection */}
+          {!isOutOfStock && (
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Quantity
+                </label>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleQuantityChange(quantity - 1)}
+                    disabled={quantity <= 1}
+                    className="h-10 w-10 p-0"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <Input
+                    type="number"
+                    min="1"
+                    max={maxQuantity}
+                    value={quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(parseInt(e.target.value))
+                    }
+                    className="w-20 text-center"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleQuantityChange(quantity + 1)}
+                    disabled={quantity >= maxQuantity}
+                    className="h-10 w-10 p-0"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Maximum {maxQuantity} items
+                </p>
+              </div>
+
+              {/* Show if already in cart */}
+              {existingCartItem && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <p className="text-sm text-blue-800">
+                    Already in cart: {existingCartItem.quantity} item(s)
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Meta Info */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
@@ -148,11 +254,28 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
             </div>
           </div>
 
-          {/* button */}
-          <div className="flex gap-2">
-            <Button className="flex-1 cursor-pointer">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Add to Cart
+          {/* Action Buttons */}
+          <div className="flex gap-3">
+            <Button
+              className="flex-1"
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || addingToCart || loading}
+            >
+              {addingToCart ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                <>
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                </>
+              )}
+            </Button>
+
+            <Button variant="outline" size="icon" className="shrink-0">
+              <Heart className="w-4 h-4" />
             </Button>
           </div>
         </div>

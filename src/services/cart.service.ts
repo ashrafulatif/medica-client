@@ -1,18 +1,16 @@
 import { API_ENDPOINTS, buildApiUrl } from "@/apiInstance";
-import { IOrderData } from "@/types";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 
-const getCustomerOrderstats = async () => {
+const getCartItems = async () => {
   try {
     const cookieStorage = await cookies();
 
     //url
-    const url = new URL(
-      buildApiUrl(API_ENDPOINTS.orders.getCustomerOrderStats),
-    );
+    const url = new URL(buildApiUrl(API_ENDPOINTS.cart.getCartItems));
 
     const result = await fetch(url.toString(), {
       cache: "no-store",
+      next: { tags: ["cart-items"] },
       headers: { Cookie: cookieStorage.toString() },
     });
 
@@ -35,77 +33,14 @@ const getCustomerOrderstats = async () => {
   }
 };
 
-const getCustomerRecentOrder = async () => {
-  try {
-    const cookieStorage = await cookies();
-
-    //url
-    const url = new URL(
-      buildApiUrl(API_ENDPOINTS.orders.getCustomerRecentOrders),
-    );
-
-    const result = await fetch(url.toString(), {
-      cache: "no-store",
-      headers: { Cookie: cookieStorage.toString() },
-    });
-
-    const data = await result.json();
-
-    if (!data.success) {
-      return {
-        message: data.message,
-      };
-    }
-    return {
-      message: data.message,
-      data: data.data,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: "Something went wrong",
-    };
-  }
-};
-
-const getAllOrders = async () => {
-  try {
-    const cookieStorage = await cookies();
-
-    //url
-    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.getAllOrders));
-
-    const result = await fetch(url.toString(), {
-      cache: "no-store",
-      headers: { Cookie: cookieStorage.toString() },
-    });
-
-    const data = await result.json();
-
-    if (!data.success) {
-      return {
-        message: "Error Fetching",
-      };
-    }
-    return {
-      data: data.data,
-    };
-  } catch (error) {
-    return {
-      data: null,
-      error: "Something went wrong",
-    };
-  }
-};
-
-const getOrderId = async (id: string) => {
+const deleteCartItems = async (id: string) => {
   try {
     const cookieStorage = await cookies();
     //url
-    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.getOrderById(id)));
+    const url = new URL(buildApiUrl(API_ENDPOINTS.cart.removeCartItem(id)));
 
     const res = await fetch(url.toString(), {
-      cache: "no-store",
+      method: "DELETE",
       headers: { Cookie: cookieStorage.toString() },
     });
 
@@ -128,19 +63,19 @@ const getOrderId = async (id: string) => {
   }
 };
 
-const cancelOrder = async (id: string) => {
+const updateCartQuantity = async (id: string, newQuantity: number) => {
   try {
     const cookieStorage = await cookies();
     //url
-    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.cancelOrder(id)));
+    const url = new URL(buildApiUrl(API_ENDPOINTS.cart.updateCartItem(id)));
 
     const res = await fetch(url.toString(), {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Cookie: cookieStorage.toString(),
       },
-      body: JSON.stringify({ status: "CANCELLED" }),
+      body: JSON.stringify({ quantity: newQuantity }),
     });
 
     const data = await res.json();
@@ -163,11 +98,11 @@ const cancelOrder = async (id: string) => {
   }
 };
 
-const createOrder = async (orderData: IOrderData) => {
+const addToCart = async (medicineId: string, quantity: number) => {
   try {
     const cookieStorage = await cookies();
-
-    const url = new URL(buildApiUrl(API_ENDPOINTS.orders.createOrder));
+    //url
+    const url = new URL(buildApiUrl(API_ENDPOINTS.cart.addCartItems));
 
     const res = await fetch(url.toString(), {
       method: "POST",
@@ -175,33 +110,63 @@ const createOrder = async (orderData: IOrderData) => {
         "Content-Type": "application/json",
         Cookie: cookieStorage.toString(),
       },
-
-      body: JSON.stringify(orderData),
+      body: JSON.stringify({ medicineId, quantity }),
     });
 
     const data = await res.json();
 
-    if (data.error) {
+    if (!data.success) {
       return {
-        data: null,
-        error: { message: "Error: Post not created." },
+        message: data.message,
+        error: data.message,
       };
     }
-
     return {
-      data: data,
-      error: null,
+      message: data.message,
+      data: data.data,
     };
   } catch (error) {
-    return { data: null, error: { message: "Something Went Wrong" } };
+    return {
+      data: null,
+      error: "Something went wrong",
+    };
   }
 };
 
-export const CustomerService = {
-  getCustomerOrderstats,
-  getCustomerRecentOrder,
-  getAllOrders,
-  getOrderId,
-  cancelOrder,
-  createOrder,
+const clearCart = async () => {
+  try {
+    const cookieStorage = await cookies();
+    //url
+    const url = new URL(buildApiUrl(API_ENDPOINTS.cart.clearCart));
+
+    const res = await fetch(url.toString(), {
+      method: "DELETE",
+      headers: { Cookie: cookieStorage.toString() },
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      return {
+        message: data.message,
+      };
+    }
+    return {
+      message: data.message,
+      data: data.data,
+    };
+  } catch (error) {
+    return {
+      data: null,
+      error: "Something went wrong",
+    };
+  }
+};
+
+export const CartService = {
+  getCartItems,
+  deleteCartItems,
+  updateCartQuantity,
+  addToCart,
+  clearCart,
 };

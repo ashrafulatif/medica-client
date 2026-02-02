@@ -128,9 +128,11 @@ const getPopularMedicine = async () => {
 
 const getMedicinebyId = async (id: string) => {
   try {
-    const res = await fetch(
-      `${buildApiUrl(API_ENDPOINTS.medicines.getMedicineById(id))}`,
+    const url = new URL(
+      buildApiUrl(API_ENDPOINTS.medicines.getMedicineById(id)),
     );
+
+    const res = await fetch(url.toString(), { next: { revalidate: 60 } });
 
     const data = await res.json();
 
@@ -187,5 +189,5 @@ export const MedicineService = {
   getMedicine,
   getFeaturedMedicine,
   getPopularMedicine,
-  getMedicinebyId
+  getMedicinebyId,
 };

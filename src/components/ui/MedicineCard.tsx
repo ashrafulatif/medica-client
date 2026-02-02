@@ -1,6 +1,8 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +12,8 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Price, PriceValue } from "./price";
+import { Plus } from "lucide-react";
+import { useCart } from "@/context/cartContext";
 
 interface Medicine {
   id: string;
@@ -41,6 +45,7 @@ interface MedicineCardProps {
 
 const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
   const defaultImage = "/fallbackMedicine.jpg";
+  const { addToCart } = useCart();
 
   const getBadgeInfo = () => {
     if (medicine.stocks < 50) {
@@ -53,6 +58,15 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
   };
 
   const badgeInfo = getBadgeInfo();
+
+  const handleAddToCart = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (medicine.isActive && medicine.stocks > 0) {
+      await addToCart(medicine.id, 1);
+    }
+  };
 
   return (
     <Link href={`/shop/${medicine.id}`} className={cn(className)}>
@@ -88,7 +102,7 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="bg-primary px-2 py-1 rounded-full text-muted">
+              <span className="bg-primary/90 px-2 py-1 rounded-full text-muted">
                 {medicine.category.name}
               </span>
               <span className="text-muted-foreground">
@@ -96,13 +110,25 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
               </span>
             </div>
 
-            <Price className="text-lg font-bold text-primary">
-              <PriceValue
-                price={medicine.price}
-                currency="USD"
-                variant="regular"
-              />
-            </Price>
+            <div className="flex items-center justify-between">
+              <Price className="text-lg font-bold text-primary">
+                <PriceValue
+                  price={medicine.price}
+                  currency="USD"
+                  variant="regular"
+                />
+              </Price>
+
+              <Button
+                size="icon"
+                onClick={handleAddToCart}
+                disabled={!medicine.isActive || medicine.stocks === 0}
+                className="h-8 px-3 cursor-pointer"
+                variant={"outline"}
+              >
+                <Plus className="h-4 w-4 rounded-b-lg" />
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

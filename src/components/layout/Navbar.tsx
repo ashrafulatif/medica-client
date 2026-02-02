@@ -40,6 +40,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "@/context/authContext";
+import { useCart } from "@/context/cartContext";
 
 interface MenuItem {
   title: string;
@@ -83,7 +84,6 @@ interface Navbar1Props {
     };
   };
   user?: UserInfo | null;
-  cartItemsCount?: number;
 }
 
 const Navbar = ({
@@ -108,10 +108,10 @@ const Navbar = ({
     login: { title: "Login", url: "/login" },
     signup: { title: "Sign up", url: "/register" },
   },
-  cartItemsCount = 0,
   className,
 }: Navbar1Props) => {
   const { user, clearUser } = useSession();
+  const { totalItems } = useCart();
 
   const getUserInitials = (name: string) => {
     return name
@@ -153,12 +153,12 @@ const Navbar = ({
           <Button variant="outline" size="sm" asChild className="relative">
             <Link href="/cart">
               <ShoppingCart className="h-4 w-4" />
-              {cartItemsCount > 0 && (
+              {totalItems > 0 && (
                 <Badge
                   variant="destructive"
                   className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 text-xs"
                 >
-                  {cartItemsCount}
+                  {totalItems > 99 ? "99+" : totalItems}
                 </Badge>
               )}
             </Link>
@@ -236,9 +236,9 @@ const Navbar = ({
             <Link href="/cart">
               <ShoppingCart className="h-4 w-4" />
               Cart
-              {cartItemsCount > 0 && (
+              {totalItems > 0 && (
                 <Badge variant="destructive" className="ml-auto">
-                  {cartItemsCount}
+                  {totalItems > 99 ? "99+" : totalItems}
                 </Badge>
               )}
             </Link>
@@ -324,12 +324,12 @@ const Navbar = ({
                 >
                   <Link href="/cart">
                     <ShoppingCart className="h-4 w-4" />
-                    {cartItemsCount > 0 && (
+                    {totalItems > 0 && (
                       <Badge
                         variant="destructive"
                         className="absolute -top-2 -right-2 h-4 w-4 flex items-center justify-center p-0 text-xs"
                       >
-                        {cartItemsCount > 9 ? "9+" : cartItemsCount}
+                        {totalItems > 9 ? "9+" : totalItems}
                       </Badge>
                     )}
                   </Link>

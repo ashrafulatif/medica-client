@@ -33,3 +33,15 @@ export interface OrdersData {
 export interface OrdersViewProps {
   orders: OrdersData;
 }
+
+
+interface IOrderItem {
+  medicineId: string;
+  quantity: number;
+}
+
+export interface IOrderData {
+  orderItems: IOrderItem[];
+  shippingAddress: string;
+  paymentMethod: string;
+}
