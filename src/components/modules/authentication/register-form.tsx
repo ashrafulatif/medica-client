@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,11 +26,10 @@ import {
 } from "@/components/ui/select";
 import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
-
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
 import { toast } from "sonner";
-
+import { Mail } from "lucide-react";
 import * as z from "zod";
 
 const formSchema = z.object({
@@ -41,14 +41,37 @@ const formSchema = z.object({
 });
 
 export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
-  //social login handler
+  const [emailSent, setEmailSent] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [isResending, setIsResending] = useState(false);
+
+  // Social login handler
   const socialLoginHandler = async () => {
     const data = authClient.signIn.social({
       provider: "google",
       callbackURL: env.NEXT_PUBLIC_GOOGLELOGIN_FALLBACKURL,
     });
-
     console.log(data);
+  };
+
+  // Resend verification email
+  const resendVerificationEmail = async () => {
+    setIsResending(true);
+    try {
+      const { data, error } = await authClient.sendVerificationEmail({
+        email: userEmail,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to resend email");
+      } else {
+        toast.success("Verification email sent successfully!");
+      }
+    } catch (error: any) {
+      toast.error("Failed to resend email");
+    } finally {
+      setIsResending(false);
+    }
   };
 
   const form = useForm({
@@ -71,13 +94,57 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
           toast.error(error.message, { id: toastId });
           return;
         }
-        toast.success("User registered successfully!", { id: toastId });
+
+        // Show email verification message
+        setUserEmail(value.email);
+        setEmailSent(true);
+        toast.success(
+          "Registration successful! Check your email for verification.",
+          { id: toastId },
+        );
       } catch (error) {
         toast.error("Something went wrong! Try again.", { id: toastId });
       }
     },
   });
 
+  // Show email verification message
+  if (emailSent) {
+    return (
+      <Card {...props}>
+        <CardHeader className="text-center">
+          <Mail className="h-12 w-12 text-primary mx-auto mb-4" />
+          <CardTitle>Check Your Email</CardTitle>
+          <CardDescription>
+            We sent a verification link to <strong>{userEmail}</strong>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-center space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Click the link in the email to verify your account.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            Didn't receive the email? Check your spam folder.
+          </p>
+        </CardContent>
+        <CardFooter className="flex flex-col space-y-2">
+          <Button
+            onClick={resendVerificationEmail}
+            variant="outline"
+            disabled={isResending}
+            className="w-full"
+          >
+            {isResending ? "Resending..." : "Resend Verification Email"}
+          </Button>
+          <FieldDescription className="text-center">
+            <Link href="/login">Back to Login</Link>
+          </FieldDescription>
+        </CardFooter>
+      </Card>
+    );
+  }
+
+  // return your existing form
   return (
     <Card {...props}>
       <CardHeader>
@@ -95,6 +162,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
           }}
         >
           <FieldGroup>
+            {/* All your existing form fields remain exactly the same */}
             <form.Field
               name="name"
               children={(field) => {
