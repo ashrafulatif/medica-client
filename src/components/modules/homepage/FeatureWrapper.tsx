@@ -5,25 +5,31 @@ import { Feature } from "./FeatureSection";
 const medicalFeatures = [
   {
     id: 1,
-    title: "Online Prescription",
-    image: "https://ibb.co/5gfL7cyg",
+    title: "Online Prescription & Consultation",
+    icon: "stethoscope",
     description:
-      "Get your prescriptions online from certified doctors. Easy, secure, and convenient prescription management system.",
+      "Connect with certified doctors from the comfort of your home. Get digital prescriptions, medical consultations, and follow-up care through our secure telemedicine platform. Available 24/7 for urgent medical needs.",
   },
   {
     id: 2,
-    title: "Medicine Delivery",
-    image: "https://via.placeholder.com/400x300/10b981/ffffff?text=Delivery",
+    title: "Fast & Reliable Medicine Delivery",
+    icon: "truck",
     description:
-      "Fast and reliable medicine delivery to your doorstep. Track your orders and get medicines when you need them.",
+      "Same-day and next-day delivery of prescription and over-the-counter medications. Track your orders in real-time, set automatic refills, and never run out of essential medicines again. Free delivery on orders over $50.",
   },
   {
     id: 3,
-    title: "Health Consultation",
-    image:
-      "https://via.placeholder.com/400x300/8b5cf6/ffffff?text=Consultation",
+    title: "Digital Health Records",
+    icon: "fileText",
     description:
-      "Connect with healthcare professionals for consultations. Get expert medical advice from the comfort of your home.",
+      "Securely store and manage your complete medical history in one place. Share records with healthcare providers, track medications, allergies, and lab results. HIPAA-compliant and accessible from any device.",
+  },
+  {
+    id: 4,
+    title: "Medicine Information & Safety",
+    icon: "shield",
+    description:
+      "Access comprehensive drug information, dosage guidelines, and potential interactions. Our AI-powered system alerts you to drug conflicts and provides detailed medication guides to ensure safe usage.",
   },
 ];
 
