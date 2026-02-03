@@ -1,4 +1,5 @@
 import CartView from "@/components/modules/cart/CartView";
+import { Metadata } from "next";
 import React from "react";
 
 const CartPage = () => {
@@ -10,3 +11,8 @@ const CartPage = () => {
 };
 
 export default CartPage;
+
+export const metadata: Metadata = {
+  title: "Cart",
+  description: "Browse all medicine",
+};

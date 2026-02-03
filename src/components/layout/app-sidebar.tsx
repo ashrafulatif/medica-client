@@ -99,6 +99,14 @@ export function AppSidebar({
     });
   };
 
+  //handle route nagivation based on role
+  let url = "";
+  if (user.role === userRoles.admin) {
+    url = "/admin-dashboard/profile";
+  } else {
+    url = "/seller-dashboard/profile";
+  }
+
   return (
     <Sidebar {...props}>
       {/* Header with user info */}
@@ -200,10 +208,14 @@ export function AppSidebar({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="gap-2">
-                  <User className="h-4 w-4" />
-                  <span>Profile</span>
-                </DropdownMenuItem>
+
+                <Link href={url}>
+                  <DropdownMenuItem className="gap-2">
+                    <User className="h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
+
                 {user.role === userRoles.admin && (
                   <DropdownMenuItem className="gap-2">
                     <Shield className="h-4 w-4" />

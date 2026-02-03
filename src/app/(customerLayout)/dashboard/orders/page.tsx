@@ -1,5 +1,6 @@
 import OrdersView from "@/components/modules/customer/OrdersView";
 import { CustomerService } from "@/services/customer.service";
+import { Metadata } from "next";
 
 const ALLOrderPage = async () => {
   const orders = await CustomerService.getAllOrders();
@@ -12,3 +13,8 @@ const ALLOrderPage = async () => {
 };
 
 export default ALLOrderPage;
+
+export const metadata: Metadata = {
+  title: "Customer Order",
+  description: "Browse all medicine",
+};

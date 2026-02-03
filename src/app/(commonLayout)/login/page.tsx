@@ -1,4 +1,5 @@
 import { LoginForm } from "@/components/modules/authentication/login-form";
+import { Metadata } from "next";
 
 export default function LoginPage() {
   return (
@@ -9,3 +10,8 @@ export default function LoginPage() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Login",
+  description: "Browse all medicine",
+};

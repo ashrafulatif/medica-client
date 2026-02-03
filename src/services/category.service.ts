@@ -1,9 +1,15 @@
 import { API_ENDPOINTS, buildApiUrl } from "@/apiInstance";
 
-const getAllCategories = async () => {
+const getAllCategories = async (params?: { page?: string; limit?: string }) => {
   try {
     //url
     const url = new URL(buildApiUrl(API_ENDPOINTS.category.getAllCategory));
+
+    if(params?.page){
+      url.searchParams.set("page", params.page)
+    }if (params?.limit){
+      url.searchParams.set("limit", params.limit)
+    }
 
     const result = await fetch(url.toString());
 

@@ -1,5 +1,6 @@
 import OrderDetailsView from "@/components/modules/customer/OrderDetailsView";
 import { CustomerService } from "@/services/customer.service";
+import { Metadata } from "next";
 
 const OrderDetails = async ({
   params,
@@ -17,3 +18,8 @@ const OrderDetails = async ({
 };
 
 export default OrderDetails;
+
+export const metadata: Metadata = {
+  title: "Order Details",
+  description: "Browse all medicine",
+};

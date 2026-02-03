@@ -1,6 +1,7 @@
 import CustomerDashboardView from "@/components/modules/customer/CustomerDashboardView";
 import { CustomerService } from "@/services/customer.service";
 import { userService } from "@/services/user.service";
+import { Metadata } from "next";
 
 const CustomerDashboardPage = async () => {
   const orderStats = await CustomerService.getCustomerOrderstats();
@@ -21,3 +22,8 @@ const CustomerDashboardPage = async () => {
 };
 
 export default CustomerDashboardPage;
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Browse all medicine",
+};

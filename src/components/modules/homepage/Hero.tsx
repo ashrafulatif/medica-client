@@ -50,17 +50,17 @@ const Hero = ({
     <section className={cn("bg-background py-20 lg:py-6", className)}>
       <div className="container flex flex-col items-center gap-10 lg:my-0 lg:flex-row">
         <div className="flex flex-col gap-7 lg:w-2/3">
-          <h2 className="text-5xl font-semibold text-foreground md:text-5xl lg:text-7xl">
+          <h2 className="text-5xl font-semibold text-foreground md:text-5xl lg:text-7xl ml-8 lg:ml-0">
             <span>{heading}</span>
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground ">
               {subheading}
               <span className="text-primary/80">.</span>
             </span>
           </h2>
-          <p className="text-base text-muted-foreground md:text-lg lg:text-xl">
+          <p className="text-base text-muted-foreground md:text-lg lg:text-xl ml-8 lg:ml-0">
             {description}
           </p>
-          <div className="flex flex-wrap items-start gap-5 lg:gap-7">
+          <div className="flex flex-wrap items-start gap-5 lg:gap-7 ml-8 lg:ml-0">
             <Button asChild>
               <Link href={buttons.primary?.url || "/login"}>
                 <div className="flex items-center gap-2">

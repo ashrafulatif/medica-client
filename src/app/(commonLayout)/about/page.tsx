@@ -1,4 +1,5 @@
 import { About } from "@/components/modules/about/About";
+import { Metadata } from "next";
 import React from "react";
 
 const AboutPage = () => {
@@ -10,3 +11,8 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
+
+export const metadata: Metadata = {
+  title: "Medica | About",
+  description: "Browse all medicine",
+};

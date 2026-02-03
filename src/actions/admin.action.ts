@@ -26,11 +26,39 @@ export const getAdminStatsAction = async () => {
   }
 };
 
-export const getAllUsersAction = async () => {
-  return await AdminService.getAllUsers();
+export const getAllUsersAction = async (params?: {
+  page?: string;
+  limit?: string;
+}) => {
+  return await AdminService.getAllUsers(params);
 };
 
 export const addCategoryAction = async (name: string, description: string) => {
   const result = await AdminService.addCategory(name, description);
   return result;
+};
+
+export const deleteUserAction = async (userId: string) => {
+  return await AdminService.deleteUser(userId);
+};
+
+export const updateUserStatusAction = async (
+  userId: string,
+  status: "ACTIVE" | "INACTIVE",
+) => {
+  return await AdminService.updateUserStatus(userId, status);
+};
+
+export const getAllMedicinesAction = async (params?: {
+  page?: string;
+  limit?: string;
+}) => {
+  return await AdminService.getAllMedicinesAdmin(params);
+};
+
+export const getAllOrdersAction = async (params?: {
+  page?: string;
+  limit?: string;
+}) => {
+  return await AdminService.getAllOrdersAdmin(params);
 };

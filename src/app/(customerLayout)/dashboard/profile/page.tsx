@@ -1,6 +1,6 @@
 import { getLoggedInUserDataAction } from "@/actions/auth.action";
 import ProfileView from "@/components/layout/ProfileView";
-
+import { Metadata } from "next";
 
 const ProfilePage = async () => {
   const result = await getLoggedInUserDataAction();
@@ -13,3 +13,8 @@ const ProfilePage = async () => {
 };
 
 export default ProfilePage;
+
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "Browse all medicine",
+};

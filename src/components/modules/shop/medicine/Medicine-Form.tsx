@@ -30,6 +30,7 @@ import {
 import { Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 const MedicineValidationSchema = z.object({
   name: z
@@ -72,6 +73,8 @@ const CreateMedicineForm = ({
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
       name: "",
@@ -102,6 +105,8 @@ const CreateMedicineForm = ({
         }
 
         toast.success("Medicine created successfully!", { id: toastId });
+
+        router.push("/seller-dashboard/manage-medicine");
 
         // Reset form
         form.reset();

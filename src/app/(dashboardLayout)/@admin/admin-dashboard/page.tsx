@@ -1,4 +1,5 @@
 import AdminDashboardView from "@/components/modules/admin/admin-dashboard/AdminDashboardView";
+import { Metadata } from "next";
 
 const AdminDashboardPage = () => {
   return (
@@ -9,3 +10,8 @@ const AdminDashboardPage = () => {
 };
 
 export default AdminDashboardPage;
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Browse all medicine",
+};

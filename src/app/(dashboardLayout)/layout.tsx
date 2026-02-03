@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { ModeToggle } from "@/components/layout/ModeToggle";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -29,6 +30,9 @@ export default async function DashboardLayout({
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
+          <div className="ml-auto">
+            <ModeToggle />
+          </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           {userInfo.role === userRoles.admin ? admin : seller}

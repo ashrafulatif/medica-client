@@ -1,5 +1,6 @@
 import MedicineDetails from "@/components/modules/shop/medicine/Medicine-detail";
 import { MedicineService } from "@/services/medicine.service";
+import { Metadata } from "next";
 import React from "react";
 
 const MedicineDetailPage = async ({
@@ -19,3 +20,8 @@ const MedicineDetailPage = async ({
 };
 
 export default MedicineDetailPage;
+
+export const metadata: Metadata = {
+  title: "Medicine Details",
+  description: "Browse all medicine",
+};

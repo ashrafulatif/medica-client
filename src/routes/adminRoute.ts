@@ -17,8 +17,20 @@ export const adminRoute: IRoutes[] = [
         url: "/admin-dashboard/create-category",
       },
       {
-        title: "Analytics",
-        url: "/admin-dashboard/analytics",
+        title: "Manage Users",
+        url: "/admin-dashboard/users",
+      },
+      {
+        title: "Category List",
+        url: "/admin-dashboard/category-list",
+      },
+      {
+        title: "Medicines",
+        url: "/admin-dashboard/medicines",
+      },
+      {
+        title: "Orders",
+        url: "/admin-dashboard/orders",
       },
     ],
   },

@@ -1,4 +1,5 @@
 import SellerDashboardView from "@/components/modules/seller/dashboard/SellerDashboardView";
+import { Metadata } from "next";
 
 const SellerDashboardPage = () => {
   return (
@@ -9,3 +10,8 @@ const SellerDashboardPage = () => {
 };
 
 export default SellerDashboardPage;
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Browse all medicine",
+};

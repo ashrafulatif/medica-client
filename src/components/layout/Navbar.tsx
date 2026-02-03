@@ -89,7 +89,7 @@ interface Navbar1Props {
 const Navbar = ({
   logo = {
     url: "/",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
+    src: "/logo.svg",
     alt: "logo",
     title: "Medica",
   },
@@ -134,7 +134,6 @@ const Navbar = ({
 
           clearUser();
           router.push("/");
-          // window.location.href = "/";
         },
         onError: () => {
           toast.error("Failed to logout. Please try again.", { id: "logout" });
@@ -280,16 +279,16 @@ const Navbar = ({
         <nav className="hidden items-center justify-between lg:flex">
           <div className="flex items-center gap-6">
             {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
+            <Link href={logo.url} className="flex items-center gap-2">
               <img
                 src={logo.src}
-                className="max-h-8 dark:invert"
+                className="max-h-8 min-h-9 dark:invert"
                 alt={logo.alt}
               />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
-            </a>
+            </Link>
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>

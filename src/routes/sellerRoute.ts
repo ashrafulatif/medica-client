@@ -17,8 +17,12 @@ export const sellerRoute: IRoutes[] = [
         url: "/seller-dashboard/create-medicine",
       },
       {
-        title: "History",
-        url: "/seller-dashboard/history",
+        title: "Manage Medicine",
+        url: "/seller-dashboard/manage-medicine",
+      },
+      {
+        title: "Manage Order",
+        url: "/seller-dashboard/manage-order",
       },
     ],
   },

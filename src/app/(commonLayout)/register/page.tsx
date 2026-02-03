@@ -1,4 +1,5 @@
 import { RegisterForm } from "@/components/modules/authentication/register-form";
+import { Metadata } from "next";
 
 export default function RegisterPage() {
   return (
@@ -9,3 +10,7 @@ export default function RegisterPage() {
     </div>
   );
 }
+export const metadata: Metadata = {
+  title: "Register",
+  description: "Browse all medicine",
+};

@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     getCustomerOrderStats: "/api/orders/customerOrderStats",
     getCustomerRecentOrders: "/api/orders/recent",
     getAllOrders: "/api/orders",
+    getAllOrdersByAdmin: "/api/orders/all",
     getOrderById: (id: string) => `/api/orders/${id}`,
     cancelOrder: (id: string) => `/api/orders/cancel/${id}`,
     createOrder: "/api/orders",
@@ -44,6 +45,7 @@ export const API_ENDPOINTS = {
   seller: {
     getStats: "/api/seller/statistics",
     getOrders: "/api/seller/orders",
+    getSellerMedicines: "/api/seller/medicines",
     updateMedicine: (id: string) => `/api/seller/medicines/${id}`,
     updateOrderStatus: (id: string) => `/api/seller/orders/${id}`,
     deleteMedicine: (id: string) => `/api/seller/medicines/${id}`,
@@ -53,6 +55,7 @@ export const API_ENDPOINTS = {
     getAllUsers: "/api/admin/users",
     updateUserStatus: (id: string) => `/api/admin/users/${id}`,
     createCategory: "/api/category",
+    deleteUser: (id: string) => `/api/admin/users/${id}`,
   },
 } as const;
 

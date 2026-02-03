@@ -2,6 +2,7 @@ import MedicineFilterForm from "@/components/modules/shop/medicine/MedicineFilte
 import { MedicineService } from "@/services/medicine.service";
 import { MedicineCard } from "@/components/ui/MedicineCard";
 import PaginationControls from "@/components/ui/pagination-control";
+import { Metadata } from "next";
 
 interface Medicine {
   id: string;
@@ -137,3 +138,8 @@ const ShopPage = async ({
 };
 
 export default ShopPage;
+
+export const metadata: Metadata = {
+  title: "Browse Shop",
+  description: "Browse all medicine",
+};

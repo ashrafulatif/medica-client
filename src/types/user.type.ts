@@ -8,7 +8,7 @@ export interface IUserInfo {
   updatedAt: string;
   role: "CUSTOMER" | "ADMIN" | "SELLER";
   phone: string;
-  status: "ACTIVE" | "INACTIVE";
+  status: "ACTIVE" | "INACTIVE" | "BANNED";
 }
 
 export interface IUpdateProfile {
