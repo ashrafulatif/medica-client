@@ -1,4 +1,4 @@
-import MedicineFilterForm from "@/components/modules/shop/MedicineFilterForm";
+import MedicineFilterForm from "@/components/modules/shop/medicine/MedicineFilterForm";
 import { MedicineService } from "@/services/medicine.service";
 import { MedicineCard } from "@/components/ui/MedicineCard";
 import PaginationControls from "@/components/ui/pagination-control";

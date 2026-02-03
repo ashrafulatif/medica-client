@@ -22,6 +22,8 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { IMedicineDetailsProps } from "@/types/medicine.type";
 import { useCart } from "@/context/cartContext";
 import { toast } from "sonner";
+import { getBadgeInfo } from "@/helpers/colorHelpers";
+import SubmitReview from "../review/reviewSubmit";
 
 const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
   const { addToCart, loading, cartItems } = useCart();
@@ -41,20 +43,9 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
         medicine.reviews.length
       : 0;
 
-  const getBadgeInfo = () => {
-    if (medicine.stocks < 1) {
-      return { text: "Out of Stock", variant: "destructive" as const };
-    }
-    if (medicine.stocks < 50) {
-      return { text: "Low Stock", variant: "destructive" as const };
-    }
-    if (medicine.isFeatured) {
-      return { text: "Featured", variant: "default" as const };
-    }
-    return { text: "In Stock", variant: "secondary" as const };
-  };
+  //get badge color
+  const badgeInfo = getBadgeInfo({ medicine });
 
-  const badgeInfo = getBadgeInfo();
   const isOutOfStock = medicine.stocks < 1;
   const maxQuantity = Math.min(medicine.stocks, 10); // limit mx 10
 
@@ -94,7 +85,7 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Image Section */}
         <div className="space-y-4">
-          <Card>
+          <Card className="border-2">
             <CardContent className="p-4">
               <AspectRatio ratio={1} className="overflow-hidden rounded-lg">
                 <img
@@ -273,24 +264,25 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
                 </>
               )}
             </Button>
-
-            <Button variant="outline" size="icon" className="shrink-0">
-              <Heart className="w-4 h-4" />
-            </Button>
           </div>
         </div>
       </div>
 
+      {/* Submit Review Section */}
+      <div className="mt-12">
+        <SubmitReview medicineId={medicine.id} />
+      </div>
+
       {/* Reviews Section */}
       {medicine.reviews?.length > 0 && (
-        <div className="mt-12">
-          <Card>
+        <div className="mt-4">
+          <Card className="border-2">
             <CardHeader>
               <CardTitle>Customer Reviews</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-2">
               {medicine.reviews.map((review) => (
-                <div key={review.id} className="border-b pb-4 last:border-0">
+                <div key={review.id} className="border-b pb-2 last:border-0">
                   <div className="flex items-start justify-between mb-2">
                     <div>
                       <p className="font-medium">{review.customer.name}</p>

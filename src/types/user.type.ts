@@ -10,3 +10,8 @@ export interface IUserInfo {
   phone: string;
   status: "ACTIVE" | "INACTIVE";
 }
+
+export interface IUpdateProfile {
+  name?: string;
+  phone?: string;
+}

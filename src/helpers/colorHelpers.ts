@@ -1,3 +1,5 @@
+import { IMedicineDetailsProps } from "@/types/medicine.type";
+
 export const getStatusColorProfile = (status: string) => {
   switch (status.toLowerCase()) {
     case "active":
@@ -51,3 +53,17 @@ export const getPaymentMethodColor = (method: string) => {
       return "bg-gray-100 text-gray-700";
   }
 };
+
+
+export const getBadgeInfo = ({medicine} : IMedicineDetailsProps ) => {
+    if (medicine.stocks < 1) {
+      return { text: "Out of Stock", variant: "destructive" as const };
+    }
+    if (medicine.stocks < 50) {
+      return { text: "Low Stock", variant: "destructive" as const };
+    }
+    if (medicine.isFeatured) {
+      return { text: "Featured", variant: "default" as const };
+    }
+    return { text: "In Stock", variant: "secondary" as const };
+  };
