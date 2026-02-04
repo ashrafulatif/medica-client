@@ -53,7 +53,7 @@ const MedicineValidationSchema = z.object({
     .min(2, "Manufacturer must be at least 2 characters")
     .max(100, "Manufacturer must be less than 100 characters"),
   categoryId: z.string().min(1, "Please select a category"),
-  thumbnail: z.any().optional(),
+  thumbnail: z.any().nullable(),
 });
 
 interface Category {

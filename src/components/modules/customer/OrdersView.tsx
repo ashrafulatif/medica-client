@@ -7,8 +7,6 @@ import Link from "next/link";
 import { getStatusColor } from "@/helpers/colorHelpers";
 import { OrdersViewProps } from "@/types/order.types";
 
-
-
 const OrdersView = ({ orders }: OrdersViewProps) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -21,6 +19,16 @@ const OrdersView = ({ orders }: OrdersViewProps) => {
   const formatOrderId = (id: string) => {
     return `ORD-${id.slice(-8).toUpperCase()}`;
   };
+  if (!orders || !orders.meta || !orders.result) {
+    return (
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">My Orders</h1>
+          <p className="text-muted-foreground">Loading orders...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

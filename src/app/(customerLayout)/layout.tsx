@@ -1,6 +1,8 @@
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
+import { userRoles } from "@/constants/userRoles";
 import { SessionProvider } from "@/context/authContext";
+import { authGuard } from "@/lib/auth.guard";
 import { userService } from "@/services/user.service";
 
 import React from "react";
@@ -10,17 +12,13 @@ export default async function CustomerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data } = await userService.getSession();
-
-  const initialUser = data?.user || null;
+  await authGuard(userRoles.customer);
 
   return (
-    <SessionProvider initialUser={initialUser}>
-      <div>
-        <Navbar cartItemsCount={0} />
-        {children}
-        <Footer />
-      </div>
-    </SessionProvider>
+    <div>
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
   );
 }

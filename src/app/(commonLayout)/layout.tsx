@@ -9,16 +9,11 @@ export default async function CommonLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { data } = await userService.getSession();
-  const initialUser = data?.user || null;
-
   return (
-    <SessionProvider initialUser={initialUser}>
-      <div>
-        <Navbar />
-        {children}
-        <Footer />
-      </div>
-    </SessionProvider>
+    <div>
+      <Navbar />
+      {children}
+      <Footer />
+    </div>
   );
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
-const VerifyEmailPage = () => {
+const VerifyEmailContent = () => {
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
   const router = useRouter();
@@ -85,6 +85,25 @@ const VerifyEmailPage = () => {
         </CardContent>
       </Card>
     </div>
+  );
+};
+
+const VerifyEmailPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center px-4">
+          <Card className="w-full max-w-md">
+            <CardContent className="text-center space-y-4 p-8">
+              <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+              <p>Loading...</p>
+            </CardContent>
+          </Card>
+        </div>
+      }
+    >
+      <VerifyEmailContent />
+    </Suspense>
   );
 };
 

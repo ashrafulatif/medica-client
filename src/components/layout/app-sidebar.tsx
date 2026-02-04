@@ -31,6 +31,7 @@ import { User, Settings, LogOut, ChevronUp, Bell, Shield } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useSession } from "@/context/authContext";
 
 interface UserData {
   id: string;
@@ -49,6 +50,7 @@ export function AppSidebar({
   user: UserData;
 } & React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
+  const { clearUser } = useSession();
 
   let routes: IRoutes[] = [];
 
@@ -90,6 +92,7 @@ export function AppSidebar({
       fetchOptions: {
         onSuccess: () => {
           toast.success("Logged out successfully!", { id: "logout" });
+          clearUser();
           router.push("/");
         },
         onError: () => {

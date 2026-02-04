@@ -30,9 +30,32 @@ const CustomerDashboardView = ({
   recentOrder,
   user,
 }: CustomerDashboardViewProps) => {
-  const statsData = stats;
-  const recentOrders = recentOrder;
+  // Add fallback values to prevent errors
+  const statsData = {
+    totalOrders: stats?.totalOrders || 0,
+    pendingOrders: stats?.pendingOrders || 0,
+    totalSpent: stats?.totalSpent || 0,
+    totalOrderItems: stats?.totalOrderItems || 0,
+  };
+
+  const recentOrders = recentOrder || [];
   const customerData = user;
+
+  // Add loading state if data is not available
+  if (!user) {
+    return (
+      <div className="space-y-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-32 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -51,19 +74,19 @@ const CustomerDashboardView = ({
       {/* Welcome Header */}
       <div className="flex items-center space-x-4 mb-8">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={customerData.email} />
+          <AvatarImage src={customerData?.email} />
           <AvatarFallback>
-            {customerData.name
-              .split(" ")
+            {customerData?.name
+              ?.split(" ")
               .map((n) => n[0])
-              .join("")}
+              .join("") || "U"}
           </AvatarFallback>
         </Avatar>
         <div>
           <h1 className="text-2xl font-bold">
-            Welcome back, {customerData.name}!
+            Welcome back, {customerData?.name || "User"}!
           </h1>
-          <p className="text-muted-foreground">{customerData.email}</p>
+          <p className="text-muted-foreground">{customerData?.email}</p>
         </div>
       </div>
 

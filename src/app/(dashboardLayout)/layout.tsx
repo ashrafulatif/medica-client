@@ -7,7 +7,9 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { userRoles } from "@/constants/userRoles";
+import { multiRoleGuard } from "@/lib/auth.guard";
 import { userService } from "@/services/user.service";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
   admin,
@@ -16,9 +18,9 @@ export default async function DashboardLayout({
   admin: React.ReactNode;
   seller: React.ReactNode;
 }) {
-  //role based
-  const { data } = await userService.getSession();
-  const userInfo = data.user;
+  const session = await multiRoleGuard([userRoles.admin, userRoles.seller]);
+
+  const userInfo = session.user;
 
   return (
     <SidebarProvider>
@@ -35,7 +37,7 @@ export default async function DashboardLayout({
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          {userInfo.role === userRoles.admin ? admin : seller}
+          {userInfo?.role === userRoles.admin ? admin : seller}
         </div>
       </SidebarInset>
     </SidebarProvider>

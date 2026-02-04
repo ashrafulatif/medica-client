@@ -4,11 +4,14 @@ import { userService } from "@/services/user.service";
 import { Metadata } from "next";
 
 const CustomerDashboardPage = async () => {
-  const orderStats = await CustomerService.getCustomerOrderstats();
-  const recentOrders = await CustomerService.getCustomerRecentOrder();
-  const { data } = await userService.getSession();
+  // Fetch all data in parallel
+  const [orderStats, recentOrders, session] = await Promise.all([
+    CustomerService.getCustomerOrderstats(),
+    CustomerService.getCustomerRecentOrder(),
+    userService.getSession(),
+  ]);
 
-  const userInfo = data.user;
+  const userInfo = session?.data?.user;
 
   return (
     <div className="container mx-auto px-6 py-20">

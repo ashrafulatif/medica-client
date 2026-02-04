@@ -28,6 +28,7 @@ interface AdminStats {
 }
 
 const AdminDashboardView = async () => {
+  
   const statsResult = await getAdminStatsAction();
 
   if (statsResult.error) {
