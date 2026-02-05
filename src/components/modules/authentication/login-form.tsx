@@ -38,7 +38,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
 
   //social login handler
   const socialLoginHandler = async () => {
-    const data = authClient.signIn.social({
+    const data = await authClient.signIn.social({
       provider: "google",
       callbackURL: env.NEXT_PUBLIC_GOOGLELOGIN_FALLBACKURL,
     });

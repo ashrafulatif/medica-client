@@ -26,27 +26,28 @@ const PopularMedicineSection = async () => {
         </p>
       </div>
 
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-          slidesToScroll: 1,
-        }}
-        className="w-full"
-      >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {medicines.map((medicine) => (
-            <CarouselItem
-              key={medicine.id}
-              className="pl-1 md:pl-4 md:basis-1/2 lg:basis-1/3 xl:basis-1/4"
-            >
-              <MedicineCard medicine={medicine} className="w-full h-full" />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+      <div className="relative px-12 md:px-2">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2 md:-ml-4">
+            {medicines.map((medicine) => (
+              <CarouselItem
+                key={medicine.id}
+                className="pl-2 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+              >
+                <MedicineCard medicine={medicine} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="-left-12 md:-left-16" />
+          <CarouselNext className="-right-12 md:-right-16" />
+        </Carousel>
+      </div>
     </div>
   );
 };
