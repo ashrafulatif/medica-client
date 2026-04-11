@@ -90,7 +90,7 @@ const MedicineFilterForm = () => {
               <form.Field name="search">
                 {(field) => (
                   <Input
-                    placeholder="Search medicines..."
+                    placeholder="Search medicines with AI..."
                     className="pl-10"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}

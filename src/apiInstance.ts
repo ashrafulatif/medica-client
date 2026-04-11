@@ -57,6 +57,9 @@ export const API_ENDPOINTS = {
     createCategory: "/api/category",
     deleteUser: (id: string) => `/api/admin/users/${id}`,
   },
+  chatbot: {
+    chat: "/api/chatbot/chat",
+  }
 } as const;
 
 export const buildApiUrl = (endpoint: string): string => {

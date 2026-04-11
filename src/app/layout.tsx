@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { CartProvider } from "@/provider/CartProvider";
 import { userService } from "@/services/user.service";
 import { SessionProvider } from "@/context/authContext";
+import { Chatbot } from "@/components/layout/Chatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,7 +45,10 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <SessionProvider initialUser={initialUser}>
-            <CartProvider>{children}</CartProvider>
+            <CartProvider>
+              {children}
+              <Chatbot />
+            </CartProvider>
           </SessionProvider>
           <Toaster richColors position="top-right" />
         </ThemeProvider>

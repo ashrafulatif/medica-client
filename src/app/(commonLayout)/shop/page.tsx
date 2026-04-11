@@ -1,50 +1,8 @@
-import MedicineFilterForm from "@/components/modules/shop/medicine/MedicineFilterForm";
-import { MedicineService } from "@/services/medicine.service";
-import { MedicineCard } from "@/components/ui/MedicineCard";
-import PaginationControls from "@/components/ui/pagination-control";
 import { Metadata } from "next";
-
-interface Medicine {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  stocks: number;
-  thumbnail: string | null;
-  manufacturer: string;
-  isActive: boolean;
-  isFeatured: boolean;
-  views: number;
-  createdAt: string;
-  updatedAt: string;
-  reviews: Review[];
-  _count: {
-    reviews: number;
-  };
-  category?: {
-    id: string;
-    name: string;
-  };
-  seller?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
-
-interface Review {
-  id: string;
-  userId: string;
-  medicineId: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  customer: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
+import { Suspense } from "react";
+import MedicineFilterForm from "@/components/modules/shop/medicine/MedicineFilterForm";
+import ShopDataFetcher from "@/components/modules/shop/medicine/ShopDataFetcher";
+import ShopSkeleton from "@/components/modules/shop/medicine/ShopSkeleton";
 
 const ShopPage = async ({
   searchParams,
@@ -82,11 +40,6 @@ const ShopPage = async ({
     ),
   );
 
-  //get data
-  const medicineData = await MedicineService.getMedicine(cleanParams, {
-    revalidate: 60,
-  });
-
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
@@ -97,42 +50,13 @@ const ShopPage = async ({
         </p>
       </div>
 
+      {/* Filter Form always remains visible during search */}
       <MedicineFilterForm />
 
-      {/* Medicine Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {medicineData?.data?.map((medicine: Medicine) => (
-          <MedicineCard
-            key={medicine.id}
-            medicine={{
-              ...medicine,
-              category: medicine.category || { id: "", name: "Uncategorized" },
-              seller: medicine.seller || {
-                id: "",
-                name: "Unknown Seller",
-                email: "",
-              },
-              reviewCount: medicine._count.reviews,
-              averageRating:
-                medicine.reviews?.length > 0
-                  ? medicine.reviews.reduce(
-                      (acc, review) => acc + review.rating,
-                      0,
-                    ) / medicine.reviews.length
-                  : 0,
-            }}
-          />
-        ))}
-      </div>
-
-      {medicineData?.meta && <PaginationControls meta={medicineData.meta} />}
-
-      {/* No results message */}
-      {(!medicineData?.data || medicineData.data.length === 0) && (
-        <div className="text-center py-12">
-          <p className="text-muted-foreground text-lg">No medicines found.</p>
-        </div>
-      )}
+      {/* Grid and AI content suspended during search */}
+      <Suspense key={JSON.stringify(cleanParams)} fallback={<ShopSkeleton />}>
+        <ShopDataFetcher searchParams={cleanParams} />
+      </Suspense>
     </div>
   );
 };

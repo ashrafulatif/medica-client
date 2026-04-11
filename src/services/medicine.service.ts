@@ -62,6 +62,8 @@ const getMedicine = async (params?: IParamsTypes, options?: IOptions) => {
     return {
       data: data.data.response,
       meta: data.data.meta,
+      recommendations: data.data.recommendations || [],
+      searchInsight: data.data.searchInsight || null,
     };
   } catch (error) {
     return {
