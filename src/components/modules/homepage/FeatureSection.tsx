@@ -60,7 +60,7 @@ const Feature = ({ features = [], className }: FeatureProps) => {
         {/* Header Section */}
         <div className="flex flex-col justify-center text-center mb-12">
           <h1 className="text-5xl font-bold py-2">
-            Why Choose <span className="text-muted-foreground">Medica</span>
+            Why Choose <span className="text-muted-foreground">Medica <span className="text-primary animate-bounce inline-block italic">?</span></span>
           </h1>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Experience the future of healthcare with our comprehensive digital

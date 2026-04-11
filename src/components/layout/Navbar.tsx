@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
   Menu,
   ShoppingCart,
@@ -103,6 +104,14 @@ const Navbar = ({
       title: "About",
       url: "/about",
     },
+    {
+      title: "Contact",
+      url: "/contact",
+    },
+    {
+      title: "FAQ",
+      url: "/faq",
+    },
   ],
   auth = {
     login: { title: "Login", url: "/login" },
@@ -112,6 +121,14 @@ const Navbar = ({
 }: Navbar1Props) => {
   const { user, clearUser } = useSession();
   const { totalItems } = useCart();
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const getUserInitials = (name: string) => {
     return name
@@ -273,7 +290,13 @@ const Navbar = ({
   };
 
   return (
-    <section className={cn("py-4", className)}>
+    <section
+      className={cn(
+        "sticky top-0 z-50 w-full bg-background py-4",
+        scrolled && "border-b border-border/40 shadow-sm",
+        className,
+      )}
+    >
       <div className="container mx-auto px-4">
         {/* Desktop Menu */}
         <nav className="hidden items-center justify-between lg:flex">
@@ -394,11 +417,13 @@ const Navbar = ({
 const renderMenuItem = (item: MenuItem) => {
   return (
     <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        asChild
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
-        <Link href={item.url}>{item.title}</Link>
+      <NavigationMenuLink asChild>
+        <Link
+          href={item.url}
+          className="relative inline-flex h-10 w-max items-center justify-center px-4 py-2 text-sm font-medium transition-colors hover:text-primary focus:text-primary outline-none bg-transparent hover:bg-transparent focus:bg-transparent after:absolute after:bottom-2 after:left-1/2 after:h-[2px] after:w-0 after:-translate-x-1/2 after:bg-primary after:transition-all after:duration-300 hover:after:w-1/2"
+        >
+          {item.title}
+        </Link>
       </NavigationMenuLink>
     </NavigationMenuItem>
   );
@@ -406,7 +431,11 @@ const renderMenuItem = (item: MenuItem) => {
 
 const renderMobileMenuItem = (item: MenuItem) => {
   return (
-    <Link key={item.title} href={item.url} className="text-md font-semibold">
+    <Link
+      key={item.title}
+      href={item.url}
+      className="text-md font-semibold transition-colors hover:text-primary"
+    >
       {item.title}
     </Link>
   );

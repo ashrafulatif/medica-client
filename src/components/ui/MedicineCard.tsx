@@ -14,6 +14,8 @@ import Link from "next/link";
 import { Price, PriceValue } from "./price";
 import { Plus } from "lucide-react";
 import { useCart } from "@/context/cartContext";
+import type { VariantProps } from "class-variance-authority";
+import { badgeVariants } from "@/components/ui/badge";
 
 interface Medicine {
   id: string;
@@ -43,18 +45,20 @@ interface MedicineCardProps {
   className?: string;
 }
 
+type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>["variant"]>;
+
 const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
   const defaultImage = "/fallbackMedicine.jpg";
   const { addToCart } = useCart();
 
-  const getBadgeInfo = () => {
+  const getBadgeInfo = (): { text: string; variant: BadgeVariant } => {
     if (medicine.stocks < 50) {
-      return { text: "Low Stock", backgroundColor: "#ef4444" };
+      return { text: "Low Stock", variant: "destructive" };
     }
     if (medicine.isFeatured) {
-      return { text: "Featured", backgroundColor: "#10b981" };
+      return { text: "Featured", variant: "default" };
     }
-    return { text: "In Stock", backgroundColor: "#6366f1" };
+    return { text: "In Stock", variant: "secondary" };
   };
 
   const badgeInfo = getBadgeInfo();
@@ -69,49 +73,65 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
   };
 
   return (
-    <Link href={`/shop/${medicine.id}`} className={cn(className)}>
-      <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group border-2 hover:border-primary/30">
-        <CardHeader className="relative p-0">
-          <AspectRatio ratio={1} className="overflow-hidden">
+    <Link
+      href={`/shop/${medicine.id}`}
+      className={cn("block h-full", className)}
+    >
+      <Card
+        className={cn(
+          "h-full gap-0 overflow-hidden border-2 border-border/80 bg-card py-0 shadow-sm",
+          "rounded-tl-4xl rounded-br-4xl rounded-tr-xs rounded-bl-xs",
+          "transition-all duration-300 ease-out",
+          "hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl",
+          "cursor-pointer group ring-1 ring-transparent hover:ring-primary/10",
+          "focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
+        )}
+      >
+        <CardHeader className="relative space-y-0 p-0">
+          <AspectRatio
+            ratio={1}
+            className="overflow-hidden bg-muted/60 rounded-tl-4xl rounded-tr-xs"
+          >
             <img
               src={medicine.thumbnail || defaultImage}
               alt={medicine.name}
-              className="block size-full object-cover object-center transition-transform duration-300 hover:scale-105 rounded-md"
+              className="size-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             />
           </AspectRatio>
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-background/80 to-transparent" />
           <Badge
-            style={{ backgroundColor: badgeInfo.backgroundColor }}
-            className="absolute start-3 top-3 text-white"
+            variant={badgeInfo.variant}
+            className="absolute start-3 top-3 shadow-sm backdrop-blur-[2px]"
           >
             {badgeInfo.text}
           </Badge>
         </CardHeader>
 
-        <CardContent className="flex h-full flex-col gap-3 p-4">
-          <div className="flex-1">
-            <CardTitle className="text-lg font-semibold line-clamp-2">
+        <CardContent className="flex flex-1 flex-col gap-3 border-t border-border/50 bg-card/50 px-4 pb-4 pt-4 backdrop-blur-[2px]">
+          <div className="flex min-h-0 flex-1 flex-col gap-1">
+            <CardTitle className="line-clamp-2 text-base font-semibold leading-snug tracking-tight transition-colors group-hover:text-primary md:text-lg">
               {medicine.name}
             </CardTitle>
-            <CardDescription className="text-sm text-muted-foreground mt-1 line-clamp-2">
+            <CardDescription className="line-clamp-2 text-sm leading-relaxed">
               {medicine.description}
             </CardDescription>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="mt-1.5 text-xs text-muted-foreground">
               by {medicine.manufacturer}
             </p>
           </div>
 
-          <div className="space-y-2">
-            <div className="flex items-center justify-between text-xs">
-              <span className="bg-primary/90 px-2 py-1 rounded-full text-muted">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2 text-xs">
+              <span className="inline-flex max-w-[55%] truncate rounded-full bg-primary/10 px-2.5 py-1 font-medium text-primary">
                 {medicine.category.name}
               </span>
-              <span className="text-muted-foreground">
+              <span className="shrink-0 tabular-nums text-muted-foreground">
                 {medicine.stocks} in stock
               </span>
             </div>
 
-            <div className="flex items-center justify-between">
-              <Price className="text-lg font-bold text-primary">
+            <div className="flex items-center justify-between gap-3 border-t border-border/40 pt-3">
+              <Price className="text-lg font-bold tabular-nums text-primary md:text-xl">
                 <PriceValue
                   price={medicine.price}
                   currency="USD"
@@ -123,10 +143,11 @@ const MedicineCard = ({ medicine, className }: MedicineCardProps) => {
                 size="icon"
                 onClick={handleAddToCart}
                 disabled={!medicine.isActive || medicine.stocks === 0}
-                className="h-8 px-3 cursor-pointer"
-                variant={"outline"}
+                className="size-9 shrink-0 rounded-full border-primary/20 transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                variant="outline"
+                aria-label="Add to cart"
               >
-                <Plus className="h-4 w-4 rounded-b-lg" />
+                <Plus className="size-4" />
               </Button>
             </div>
           </div>

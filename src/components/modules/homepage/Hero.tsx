@@ -1,3 +1,6 @@
+"use client";
+
+import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -47,20 +50,65 @@ const Hero = ({
   className,
 }: HeroProps) => {
   return (
-    <section className={cn("bg-background py-20 lg:py-6", className)}>
+    <section
+      className={cn("bg-background py-20 lg:py-6 overflow-hidden", className)}
+    >
       <div className="container flex flex-col items-center gap-10 lg:my-0 lg:flex-row">
-        <div className="flex flex-col gap-7 lg:w-2/3">
-          <h2 className="text-5xl font-semibold text-foreground md:text-5xl lg:text-7xl ml-8 lg:ml-0">
+        <motion.div
+          className="flex flex-col gap-7 lg:w-2/3"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.15 },
+            },
+          }}
+        >
+          <motion.h2
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.6, ease: "easeOut" },
+              },
+            }}
+            className="text-5xl font-semibold text-foreground md:text-5xl lg:text-7xl ml-8 lg:ml-0"
+          >
             <span>{heading}</span>
             <span className="text-muted-foreground ">
               {subheading}
               <span className="text-primary/80">.</span>
             </span>
-          </h2>
-          <p className="text-base text-muted-foreground md:text-lg lg:text-xl ml-8 lg:ml-0">
+          </motion.h2>
+
+          <motion.p
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.6, ease: "easeOut" },
+              },
+            }}
+            className="text-base text-muted-foreground md:text-lg lg:text-xl ml-8 lg:ml-0"
+          >
             {description}
-          </p>
-          <div className="flex flex-wrap items-start gap-5 lg:gap-7 ml-8 lg:ml-0">
+          </motion.p>
+
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.6, ease: "easeOut" },
+              },
+            }}
+            className="flex flex-wrap items-start gap-5 lg:gap-7 ml-8 lg:ml-0"
+          >
             <Button asChild>
               <Link href={buttons.primary?.url || "/login"}>
                 <div className="flex items-center gap-2">
@@ -76,24 +124,39 @@ const Hero = ({
                 {buttons.secondary?.text}
               </Link>
             </Button>
-          </div>
-        </div>
-        <div className="relative z-10">
-          <div className="absolute top-2.5 left-1/2! h-[92%]! w-[69%]! -translate-x-[52%] overflow-hidden rounded-[35px]">
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="relative z-10"
+          initial={{ opacity: 0, scale: 0.85, y: 30 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+        >
+          <motion.div
+            animate={{ y: [0, -15, 0] }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <div className="absolute top-2.5 left-1/2! h-[92%]! w-[69%]! -translate-x-[52%] overflow-hidden rounded-[35px]">
+              <img
+                src={image.src}
+                alt={image.alt}
+                className="size-full object-cover object-[50%_0%]"
+              />
+            </div>
             <img
-              src={image.src}
-              alt={image.alt}
-              className="size-full object-cover object-[50%_0%]"
+              className="relative z-10"
+              src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/mockups/phone-2.png"
+              width={350}
+              height={889}
+              alt="iphone"
             />
-          </div>
-          <img
-            className="relative z-10"
-            src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/mockups/phone-2.png"
-            width={450}
-            height={889}
-            alt="iphone"
-          />
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
