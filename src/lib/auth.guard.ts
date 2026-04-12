@@ -1,4 +1,4 @@
-// src/lib/guards/auth.guard.ts
+
 import { userService } from "@/services/user.service";
 import { userRoles } from "@/constants/userRoles";
 import { redirect } from "next/navigation";
@@ -16,6 +16,8 @@ export async function authGuard(allowedRole: string) {
   if (userRole !== allowedRole) {
     if (userRole === userRoles.admin) redirect("/admin-dashboard");
     if (userRole === userRoles.seller) redirect("/seller-dashboard");
+    if (userRole === userRoles.superAdmin) redirect("/super-admin-dashboard");
+    if (userRole === userRoles.pharmacist) redirect("/pharmacist-dashboard");
     if (userRole === userRoles.customer) redirect("/dashboard");
   }
 
@@ -33,9 +35,12 @@ export async function multiRoleGuard(allowedRoles: string[]) {
   const userRole = session.data.user.role;
 
   if (!allowedRoles.includes(userRole)) {
+    if (userRole === userRoles.superAdmin) redirect("/super-admin-dashboard");
     if (userRole === userRoles.admin) redirect("/admin-dashboard");
+    if (userRole === userRoles.pharmacist) redirect("/pharmacist-dashboard");
     if (userRole === userRoles.seller) redirect("/seller-dashboard");
     if (userRole === userRoles.customer) redirect("/dashboard");
+    redirect("/");
   }
 
   return session.data;

@@ -1,5 +1,6 @@
 import MedicineDetails from "@/components/modules/shop/medicine/Medicine-detail";
 import { MedicineService } from "@/services/medicine.service";
+import { getQuestionsAction } from "@/actions/pharmacist.action";
 import { Metadata } from "next";
 import React from "react";
 
@@ -10,13 +11,25 @@ const MedicineDetailPage = async ({
 }) => {
   const { id } = await params;
 
-  const medicineResponse = await MedicineService.getMedicinebyId(id);
+  const [medicineResponse, questionsResponse] = await Promise.all([
+    MedicineService.getMedicinebyId(id),
+    getQuestionsAction({ medicineId: id })
+  ]);
 
   if ("error" in medicineResponse || !medicineResponse.data) {
     return <div>Medicine not found</div>;
   }
 
-  return <div>{<MedicineDetails medicine={medicineResponse.data} />}</div>;
+  const questions = questionsResponse?.data?.result || [];
+
+  return (
+    <div>
+      <MedicineDetails
+        medicine={medicineResponse.data}
+        questions={questions}
+      />
+    </div>
+  );
 };
 
 export default MedicineDetailPage;

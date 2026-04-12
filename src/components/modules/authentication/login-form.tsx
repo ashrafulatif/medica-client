@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -21,11 +22,14 @@ import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 import { useForm } from "@tanstack/react-form";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import * as z from "zod";
+import { demoAccounts } from "@/utils/demoAccountCredentials";
 
 const formSchema = z.object({
   email: z.email(),
@@ -35,6 +39,7 @@ const formSchema = z.object({
 export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
   const { refreshSession } = useSession();
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   //social login handler
   const socialLoginHandler = async () => {
@@ -68,6 +73,11 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
     },
   });
 
+  const fillDemoCredentials = (account: (typeof demoAccounts)[number]) => {
+    form.setFieldValue("email", account.email);
+    form.setFieldValue("password", account.password);
+  };
+
   return (
     <Card {...props}>
       <CardHeader>
@@ -99,6 +109,7 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                       name={field.name}
                       value={field.state.value}
                       onChange={(e) => field.handleChange(e.target.value)}
+                      placeholder="Enter you email"
                       aria-invalid={isInvalid}
                     ></Input>
 
@@ -118,14 +129,32 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
                 return (
                   <Field data-invalid={isInvalid}>
                     <FieldLabel htmlFor={field.name}>Password</FieldLabel>
-                    <Input
-                      id={field.name}
-                      type="text"
-                      name={field.name}
-                      value={field.state.value}
-                      onChange={(e) => field.handleChange(e.target.value)}
-                      aria-invalid={isInvalid}
-                    ></Input>
+                    <div className="relative">
+                      <Input
+                        id={field.name}
+                        type={showPassword ? "text" : "password"}
+                        name={field.name}
+                        value={field.state.value}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        placeholder="Enter your password"
+                        aria-invalid={isInvalid}
+                        className="pr-10"
+                      ></Input>
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-muted-foreground hover:text-foreground"
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
 
                     {isInvalid && (
                       <FieldError errors={field.state.meta.errors} />
@@ -138,16 +167,53 @@ export function LoginForm({ ...props }: React.ComponentProps<typeof Card>) {
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="vertical">
-          <Button form="login-form" type="submit">
+        <Field orientation="vertical" className="w-full gap-4">
+          <Button
+            form="login-form"
+            type="submit"
+            className="w-full cursor-pointer"
+          >
             Login
           </Button>
-          <Button variant="outline" onClick={() => socialLoginHandler()}>
+
+          <div className="my-2 space-y-4">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Demo Accounts
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2">
+              {demoAccounts.map((account) => (
+                <Badge
+                  key={account.role}
+                  variant="secondary"
+                  className="cursor-pointer hover:bg-secondary/80"
+                  onClick={() => fillDemoCredentials(account)}
+                >
+                  {account.role}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
+          <Button
+            variant="outline"
+            onClick={() => socialLoginHandler()}
+            className="w-full"
+          >
             Continue with Google
           </Button>
 
           <FieldDescription className="text-center">
-            Don't have an account? <Link href="/register">Sign up</Link>
+            Don't have an account?{" "}
+            <Link href="/register" className="text-primary hover:underline">
+              Sign up
+            </Link>
           </FieldDescription>
         </Field>
       </CardFooter>

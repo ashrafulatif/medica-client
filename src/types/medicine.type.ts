@@ -25,6 +25,7 @@ export interface IMedicineTypes {
 }
 
 export interface IMedicineDetailsProps {
+  questions?: any[];
   medicine: {
     id: string;
     name: string;

@@ -24,8 +24,9 @@ import { useCart } from "@/context/cartContext";
 import { toast } from "sonner";
 import { getBadgeInfo } from "@/helpers/colorHelpers";
 import SubmitReview from "../review/reviewSubmit";
+import MedicineQuestions from "./MedicineQuestions";
 
-const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
+const MedicineDetails = ({ medicine, questions }: IMedicineDetailsProps) => {
   const { addToCart, loading, cartItems } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [addingToCart, setAddingToCart] = useState(false);
@@ -267,6 +268,9 @@ const MedicineDetails = ({ medicine }: IMedicineDetailsProps) => {
           </div>
         </div>
       </div>
+
+      {/* Q&A Section */}
+      <MedicineQuestions medicineId={medicine.id} questions={questions || []} />
 
       {/* Submit Review Section */}
       <div className="mt-12">

@@ -24,5 +24,9 @@ export const config = {
     "/admin-dashboard/:path*",
     "/seller-dashboard",
     "/seller-dashboard/:path*",
+    "/super-admin-dashboard",
+    "/super-admin-dashboard/:path*",
+    "/pharmacist-dashboard",
+    "/pharmacist-dashboard/:path*",
   ],
 };

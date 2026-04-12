@@ -25,6 +25,8 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { IRoutes } from "@/types";
 import { adminRoute } from "@/routes/adminRoute";
+import { superAdminRoute } from "@/routes/superAdminRoute";
+import { pharmacistRoute } from "@/routes/pharmacistRoute";
 import { userRoles } from "@/constants/userRoles";
 import { sellerRoute } from "@/routes/sellerRoute";
 import { User, Settings, LogOut, ChevronUp, Bell, Shield } from "lucide-react";
@@ -55,8 +57,14 @@ export function AppSidebar({
   let routes: IRoutes[] = [];
 
   switch (user.role) {
+    case userRoles.superAdmin:
+      routes = superAdminRoute;
+      break;
     case userRoles.admin:
       routes = adminRoute;
+      break;
+    case userRoles.pharmacist:
+      routes = pharmacistRoute;
       break;
     case userRoles.seller:
       routes = sellerRoute;
@@ -67,8 +75,12 @@ export function AppSidebar({
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
+      case userRoles.superAdmin:
+        return "destructive";
       case userRoles.admin:
         return "destructive";
+      case userRoles.pharmacist:
+        return "secondary";
       case userRoles.seller:
         return "default";
       default:
@@ -104,8 +116,12 @@ export function AppSidebar({
 
   //handle route nagivation based on role
   let url = "";
-  if (user.role === userRoles.admin) {
+  if (user.role === userRoles.superAdmin) {
+    url = "/super-admin-dashboard/profile";
+  } else if (user.role === userRoles.admin) {
     url = "/admin-dashboard/profile";
+  } else if (user.role === userRoles.pharmacist) {
+    url = "/pharmacist-dashboard/profile";
   } else {
     url = "/seller-dashboard/profile";
   }
@@ -219,7 +235,8 @@ export function AppSidebar({
                   </DropdownMenuItem>
                 </Link>
 
-                {user.role === userRoles.admin && (
+                {(user.role === userRoles.admin ||
+                  user.role === userRoles.superAdmin) && (
                   <DropdownMenuItem className="gap-2">
                     <Shield className="h-4 w-4" />
                     <span>Admin Panel</span>

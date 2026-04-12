@@ -57,6 +57,16 @@ export const API_ENDPOINTS = {
     createCategory: "/api/category",
     deleteUser: (id: string) => `/api/admin/users/${id}`,
   },
+  pharmacist: {
+    getPendingMedicines: "/api/pharmacist/medicines/pending",
+    verifyMedicine: (id: string) => `/api/pharmacist/medicines/${id}/verification`,
+    createCategoryRecommendation: "/api/pharmacist/category-recommendations",
+    updateCategoryRecommendation: (id: string) => `/api/pharmacist/category-recommendations/${id}`,
+    getQuestions: "/api/pharmacist/questions",
+    answerQuestion: (id: string) => `/api/pharmacist/questions/${id}/replies`,
+    updateReplyStatus: (id: string) => `/api/pharmacist/replies/${id}/status`,
+    createQuestion: "/api/pharmacist/questions",
+  },
   chatbot: {
     chat: "/api/chatbot/chat",
   }

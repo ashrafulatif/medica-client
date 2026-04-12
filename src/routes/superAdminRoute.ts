@@ -9,7 +9,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 
-export const adminRoute: IRoutes[] = [
+export const superAdminRoute: IRoutes[] = [
   {
     title: "Medica. User Management",
     items: [
@@ -20,32 +20,32 @@ export const adminRoute: IRoutes[] = [
       },
       {
         title: "Dashboard",
-        url: "/admin-dashboard",
+        url: "/super-admin-dashboard",
         icon: LayoutDashboard,
       },
       {
         title: "Create Category",
-        url: "/admin-dashboard/create-category",
+        url: "/super-admin-dashboard/create-category",
         icon: FolderPlus,
       },
       {
         title: "Manage Users",
-        url: "/admin-dashboard/users",
+        url: "/super-admin-dashboard/users",
         icon: Users,
       },
       {
         title: "Category List",
-        url: "/admin-dashboard/category-list",
+        url: "/super-admin-dashboard/category-list",
         icon: List,
       },
       {
         title: "Medicines",
-        url: "/admin-dashboard/medicines",
+        url: "/super-admin-dashboard/medicines",
         icon: Pill,
       },
       {
         title: "Orders",
-        url: "/admin-dashboard/orders",
+        url: "/super-admin-dashboard/orders",
         icon: ShoppingCart,
       },
     ],

@@ -14,11 +14,20 @@ import { redirect } from "next/navigation";
 export default async function DashboardLayout({
   admin,
   seller,
+  superAdmin,
+  pharmacist,
 }: {
   admin: React.ReactNode;
   seller: React.ReactNode;
+  superAdmin: React.ReactNode;
+  pharmacist: React.ReactNode;
 }) {
-  const session = await multiRoleGuard([userRoles.admin, userRoles.seller]);
+  const session = await multiRoleGuard([
+    userRoles.superAdmin,
+    userRoles.admin,
+    userRoles.pharmacist,
+    userRoles.seller,
+  ]);
 
   const userInfo = session.user;
 
@@ -37,7 +46,13 @@ export default async function DashboardLayout({
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
-          {userInfo?.role === userRoles.admin ? admin : seller}
+          {userInfo?.role === userRoles.superAdmin
+            ? superAdmin
+            : userInfo?.role === userRoles.admin
+              ? admin
+              : userInfo?.role === userRoles.pharmacist
+                ? pharmacist
+                : seller}
         </div>
       </SidebarInset>
     </SidebarProvider>
