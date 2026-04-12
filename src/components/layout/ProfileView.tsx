@@ -53,7 +53,7 @@ const ProfileView = ({ user }: { user: IUserInfo }) => {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <p className="text-muted-foreground">Loading profile...</p>
+          <p className="text-muted-foreground">Profile data is unavailable.</p>
         </div>
       </div>
     );

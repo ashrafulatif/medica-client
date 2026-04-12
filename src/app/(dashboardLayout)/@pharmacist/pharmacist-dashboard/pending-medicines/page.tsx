@@ -10,7 +10,7 @@ export default async function PendingMedicinesPage({
   const data = await getPendingMedicinesAction(resolvedParams);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 container mx-auto px-4 py-8">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Pending Medicines</h1>
         <p className="text-muted-foreground">

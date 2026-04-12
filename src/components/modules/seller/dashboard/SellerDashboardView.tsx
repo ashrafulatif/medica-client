@@ -14,7 +14,7 @@ import DashboardSection from "@/components/layout/dashboard-layout/DashboardSect
 import DashboardGrid from "@/components/layout/dashboard-layout/DashboardGrid";
 import StatCard from "@/components/layout/dashboard-layout/StartCard";
 import SimpleChart from "@/components/layout/dashboard-layout/SimpleChartData";
-import MetricsOverview from "@/components/layout/dashboard-layout/MetricsOverview";
+import OrderStatusPieChart from "@/components/layout/dashboard-layout/OrderStatusPieChart";
 
 interface SellerStats {
   medicines: {
@@ -158,9 +158,8 @@ const SellerDashboardView = async () => {
           description="Current status of your medicine stock"
           data={medicineChartData}
         />
-        <MetricsOverview
+        <OrderStatusPieChart
           title="Order Status Overview"
-          icon={ShoppingCart}
           metrics={orderMetrics}
         />
       </DashboardGrid>
